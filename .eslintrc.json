@@ -6,7 +6,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -34,6 +35,7 @@
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
     "@typescript-eslint/no-unused-vars": "warn",
+    "react/display-name": "off",
     "semi": [
       "error",
       "always"
