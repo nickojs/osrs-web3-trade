@@ -35,7 +35,7 @@ export const InventoryContent = styled.div`
   padding: 60px 45px;
   height: 412px;
 `;
-export const ItemWrapper = styled.a<{ examine: string }>`
+export const ItemWrapper = styled.a<{ examine: string, displayInformative: boolean }>`
   position: relative;
   width: 50px;
   height: 50px;
@@ -52,7 +52,7 @@ export const ItemWrapper = styled.a<{ examine: string }>`
 
   &:before{
     content: "${({ examine }) => examine}";
-    opacity: 0;
+    opacity: ${({ displayInformative }) => displayInformative ? 1 : 0};
     
     position: absolute;
     bottom: -5%; left: 0; 
@@ -73,8 +73,5 @@ export const ItemWrapper = styled.a<{ examine: string }>`
 
   &:hover {
     cursor: pointer;
-    &:before {
-      opacity: 1;
-    }
   }
 `;

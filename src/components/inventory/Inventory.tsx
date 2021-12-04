@@ -1,24 +1,13 @@
-import { Inventory, InventoryContent, ItemWrapper } from './styles';
+import { InventoryProps } from './interfaces';
+import { Inventory, InventoryContent } from './styles';
+import ItemWrapper from './ItemWrapper';
 
-export interface Item { 
-  id: number,
-  name: string,
-  examine: string,
-  url: string,
-  image: string // base64 string
-}
-export interface InventoryProps {
-  items: Item[]
-}
-
-export default ({ items }: InventoryProps) => {
+export default ({ items }: InventoryProps): JSX.Element => {
   return (
     <Inventory>
       <InventoryContent>
-        {items.map(({id, url, examine, image }) => (
-          <ItemWrapper key={id} href={url} examine={examine}>
-            <img src={`data:image/png;base64, ${image}`} />
-          </ItemWrapper>
+        {items.map((item) => (
+          <ItemWrapper key={item.id} item={item} />
         ))}
       </InventoryContent>
     </Inventory>
