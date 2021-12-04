@@ -1,11 +1,20 @@
 import { Story, Meta } from '@storybook/react';
-import Inventory from './Inventory';
+import Inventory, { InventoryProps } from './Inventory';
+import items from './mocks/items';
 
 export default {
   component: Inventory,
   title: 'Containers/Inventory'
 } as Meta;
 
-const InventoryStory: Story = (args) => <Inventory {...args} />;
+const InventoryStory: Story<InventoryProps> = (args) => <Inventory {...args} />;
 
-export const EmptyInventory = InventoryStory.bind({});
+export const InventoryEmpty = InventoryStory.bind({});
+InventoryEmpty.args = {
+  items: []
+};
+
+export const InventoryWithItems = InventoryStory.bind({});
+InventoryWithItems.args = {
+  items
+};
