@@ -1,8 +1,7 @@
 .container {
   position: relative;
-  height: 485px;
-  width: 350px;
-  padding: 60px 50px;
+  height: 532px;
+  width: 382px;
 
   filter: drop-shadow(5px 5px 5px black);
 
@@ -13,7 +12,8 @@
 }
 
 .contents { 
-  padding: 20px;
+  padding: 60px 45px;
+  height: 412px;
 }
 
 /* .menu_container {
