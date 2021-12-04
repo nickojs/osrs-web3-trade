@@ -35,16 +35,46 @@ export const InventoryContent = styled.div`
   padding: 60px 45px;
   height: 412px;
 `;
-export const ItemWrapper = styled.div`
+export const ItemWrapper = styled.a<{ examine: string }>`
+  position: relative;
   width: 50px;
   height: 50px;
+
+  font-size: 12px;
+  text-decoration: none;
+  
+  color: white;
 
   img { 
     width: 100%;
     height: 100%;
   }
 
+  &:before{
+    content: "${({ examine }) => examine}";
+    opacity: 0;
+    
+    position: absolute;
+    bottom: -5%; left: 0; 
+    transform: translateX(-50%);
+
+    height: 20px;
+    width: ${({ examine }) => examine.length}ch;
+    z-index: 2;
+    
+    text-align: center;
+    line-height: 20px;
+
+    background: #5d5447;
+    border: 3px double black;
+
+    transition: .3s opacity;
+  }
+
   &:hover {
     cursor: pointer;
+    &:before {
+      opacity: 1;
+    }
   }
 `;

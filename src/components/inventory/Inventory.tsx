@@ -15,11 +15,11 @@ export default ({ items }: InventoryProps) => {
   return (
     <Inventory>
       <InventoryContent>
-        {items.map(({id, image }) => (
-          <ItemWrapper key={id}>
+        {items.map(({id, url, examine, image }) => (
+          <ItemWrapper key={id} href={url} examine={examine}>
             <img src={`data:image/png;base64, ${image}`} />
           </ItemWrapper>
-        ) ) }
+        ))}
       </InventoryContent>
     </Inventory>
   );
