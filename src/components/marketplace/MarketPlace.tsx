@@ -3,7 +3,8 @@ import debounce from 'lodash.debounce';
 import { EndPoints, searchRequest } from '../../services/endpoints';
 import { Item } from '../inventory/interfaces';
 import useRequest from '../../hooks/useRequest';
-import { MarketPlace } from './styles';
+import { MarketPlace, ListView } from './styles';
+import ItemWrapper from '../inventory/ItemWrapper';
 
 export default (): JSX.Element => {
   const [search, setSearch] = useState('');
@@ -48,13 +49,17 @@ export default (): JSX.Element => {
         placeholder="Search for an item" 
         onChange={e => debouncedSearchHandler(e.target.value)}
       />
+
       {loading && <p>loading...</p>}
 
       {error && <p>{JSON.stringify(error)}</p>}
 
-      {items.map((item) => (
-        <p key={item.id}>{item.name}</p>
-      ))}
+      <ListView>
+        {items.length > 0 && items.map((item) => (
+          <ItemWrapper key={item.id} item={item} />
+        ))}
+      </ListView>
+
     </MarketPlace>
   );
 };

@@ -8,3 +8,11 @@ export const MarketPlace = styled.section`
   
   background: #483e33;
 `;
+
+export const ListView = styled.ul`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0 12px;
+`;
