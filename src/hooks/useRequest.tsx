@@ -33,7 +33,7 @@ const initialState: State = {
   loading: false
 };
 
-const requestReducer = (state: State, action: Actions) => {
+const requestReducer = (state: State = initialState, action: Actions) => {
   switch (action.type) {
   case 'LOADING':
     return {
