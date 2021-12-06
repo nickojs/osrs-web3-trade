@@ -1,5 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import inventoryBg from '../../assets/inventory.png';
+
+const selectedBorder = css`
+  border: 2px inset white;
+`;
 
 export const Inventory = styled.div`
   position: relative;
@@ -41,8 +45,8 @@ export const InventoryContent = styled.ul`
 
 export const ItemWrapper = styled.li<{ examine: string, displayInformative: boolean }>`
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   padding: 6px;
   margin: 6px;
   box-sizing: border-box;
@@ -51,6 +55,9 @@ export const ItemWrapper = styled.li<{ examine: string, displayInformative: bool
   text-decoration: none;
   
   color: white;
+
+  border: 2px solid transparent;
+  ${({ displayInformative }) => displayInformative && selectedBorder};
 
   img { 
     width: 100%;
@@ -80,6 +87,6 @@ export const ItemWrapper = styled.li<{ examine: string, displayInformative: bool
 
   &:hover {
     cursor: pointer;
-    border: 2px inset white;
+    ${selectedBorder}
   }
 `;
