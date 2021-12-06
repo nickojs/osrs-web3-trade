@@ -14,7 +14,7 @@ export const Inventory = styled.div`
   background-repeat: no-repeat;
 `;
 
-export const InventoryContent = styled.div`
+export const InventoryContent = styled.ul`
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr 1fr; 
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 
@@ -32,13 +32,20 @@ export const InventoryContent = styled.div`
   align-content: center; 
   justify-items: center; 
   align-items: center; 
+
   padding: 60px 45px;
   height: 412px;
+
+  list-style: none;
 `;
-export const ItemWrapper = styled.a<{ examine: string, displayInformative: boolean }>`
+
+export const ItemWrapper = styled.li<{ examine: string, displayInformative: boolean }>`
   position: relative;
   width: 50px;
   height: 50px;
+  padding: 6px;
+  margin: 6px;
+  box-sizing: border-box;
 
   font-size: 12px;
   text-decoration: none;
@@ -51,7 +58,7 @@ export const ItemWrapper = styled.a<{ examine: string, displayInformative: boole
   }
 
   &:before{
-    content: "${({ examine }) => examine || 'No description available'}";
+    content: "${({ examine }) => examine || 'No description available.'}";
     opacity: ${({ displayInformative }) => displayInformative ? 1 : 0};
     
     position: absolute;
@@ -59,8 +66,8 @@ export const ItemWrapper = styled.a<{ examine: string, displayInformative: boole
     transform: translateX(-50%);
 
     height: 20px;
-    width: ${({ examine }) => examine?.length || 0}ch;
-    z-index: 2;
+    width: ${({ examine }) => examine?.length || 24}ch;
+    z-index: ${({ displayInformative }) => displayInformative ? 2 : -1};
     
     text-align: center;
     line-height: 20px;
@@ -73,5 +80,6 @@ export const ItemWrapper = styled.a<{ examine: string, displayInformative: boole
 
   &:hover {
     cursor: pointer;
+    border: 2px inset white;
   }
 `;
