@@ -51,7 +51,7 @@ export const ItemWrapper = styled.a<{ examine: string, displayInformative: boole
   }
 
   &:before{
-    content: "${({ examine }) => examine}";
+    content: "${({ examine }) => examine || 'No description available'}";
     opacity: ${({ displayInformative }) => displayInformative ? 1 : 0};
     
     position: absolute;
@@ -59,7 +59,7 @@ export const ItemWrapper = styled.a<{ examine: string, displayInformative: boole
     transform: translateX(-50%);
 
     height: 20px;
-    width: ${({ examine }) => examine.length}ch;
+    width: ${({ examine }) => examine?.length || 0}ch;
     z-index: 2;
     
     text-align: center;
