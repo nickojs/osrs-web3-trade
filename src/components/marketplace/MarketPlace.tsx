@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 import { EndPoints, searchRequest } from '../../services/endpoints';
 import { Item } from '../inventory/interfaces';
 import useRequest from '../../hooks/useRequest';
-import { MarketPlace, ListView } from './styles';
+import { MarketPlace, ListView, MakertPlaceTitle, Search } from './styles';
 import ItemWrapper from '../inventory/ItemWrapper';
 
 export default (): JSX.Element => {
@@ -43,8 +43,8 @@ export default (): JSX.Element => {
 
   return (
     <MarketPlace>
-      <h1>MarketPlace</h1>
-      <input 
+      <MakertPlaceTitle>MarketPlace</MakertPlaceTitle>
+      <Search 
         type="text" 
         placeholder="Search for an item" 
         onChange={e => debouncedSearchHandler(e.target.value)}
@@ -59,7 +59,6 @@ export default (): JSX.Element => {
           <ItemWrapper key={item.id} item={item} />
         ))}
       </ListView>
-
     </MarketPlace>
   );
 };
