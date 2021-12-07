@@ -13,6 +13,7 @@ const loaderAnimation = keyframes`
 export const LoaderContainer = styled.div`
   height: 30px;
   width: 160px;
+  margin: 24px auto;
   
   border: 1px inset white;
   background: black;
@@ -27,7 +28,7 @@ export const LoaderInner = styled.div`
     margin: 0;
     padding: 0;
     padding-left: 4px;
-    
+
     line-height: 26px;
     font-weight: bold;
 

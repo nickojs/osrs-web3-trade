@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import { EndPoints, searchRequest } from '../../services/endpoints';
 import { Item } from '../inventory/interfaces';
-import useRequest from '../../hooks/useRequest';
-import { MarketPlace, ListView, MakertPlaceTitle, Search } from './styles';
+import { 
+  MarketPlace, 
+  ListView, 
+  MakertPlaceTitle, 
+  Search } from './styles';
 import ItemWrapper from '../inventory/ItemWrapper';
+import Loader from '../UI/loader/Loader';
+import useRequest from '../../hooks/useRequest';
 
+  
 export default (): JSX.Element => {
   const [search, setSearch] = useState('');
   const [params, setParams] = useState({});
@@ -17,7 +23,7 @@ export default (): JSX.Element => {
   const { data, loading, error } = useRequest(params, EndPoints.ITEMS);
 
   useEffect(() => { 
-    setParams(searchRequest(search));
+    if (search.length > 0) setParams(searchRequest(search));
   }, [search]);
 
   useEffect(() => { 
@@ -39,8 +45,6 @@ export default (): JSX.Element => {
     }
   }, [data]);
 
-  useEffect(() => { if(items) console.log(items); }, [items]);
-
   return (
     <MarketPlace>
       <MakertPlaceTitle>MarketPlace</MakertPlaceTitle>
@@ -50,7 +54,7 @@ export default (): JSX.Element => {
         onChange={e => debouncedSearchHandler(e.target.value)}
       />
 
-      {loading && <p>loading...</p>}
+      {loading && <Loader />}
 
       {error && <p>{JSON.stringify(error)}</p>}
 
