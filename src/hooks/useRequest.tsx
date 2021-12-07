@@ -68,8 +68,8 @@ const requestReducer = (state: State = initialState, action: Actions) => {
 export default (params: Record<string, unknown>, endpoint: EndPoints): typeof requestState => {
   const [requestState, dispatch] = useReducer(requestReducer, initialState);
   const fetchData = useCallback(async () => {
-    dispatch({ type: ActionTypes.LOADING, status: true });
     if (Object.keys(params).length > 0) { 
+      dispatch({ type: ActionTypes.LOADING, status: true });
       try {
         const request = await api({ 
           url: endpoint, 
