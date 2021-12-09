@@ -6,7 +6,7 @@ export default (): JSX.Element => {
     <>
       <GlobalStyle />
       <div className="App">
-        <p>Oi maria das graças gostosa</p>
+        <p>I was just testing</p>
       </div>
     </>
   );
