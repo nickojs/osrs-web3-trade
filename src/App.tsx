@@ -1,13 +1,11 @@
 import { GlobalStyle } from './globalStyles';
+import Main from './Containers/Main';
 
 export default (): JSX.Element => { 
-
   return (
     <>
       <GlobalStyle />
-      <div className="App">
-        <p>I was just testing</p>
-      </div>
+      <Main />
     </>
   );
 };
