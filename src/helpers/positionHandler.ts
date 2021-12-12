@@ -1,4 +1,4 @@
-export enum Position { 
+export enum Placement { 
   TOPLEFT,
   TOPRIGHT,
   BOTTOMLEFT,
@@ -7,34 +7,33 @@ export enum Position {
 }
 type PositionValues = { width: number; height: number };
 
-
 export default (
-  desiredPosition: Position, 
+  desiredPosition: Placement, 
   componentPosition: PositionValues, 
   windowPosition: PositionValues
 ): { x: number; y: number } => {
   switch (desiredPosition) {
-  case Position.TOPLEFT:
+  case Placement.TOPLEFT:
     return { 
       x: 0,
       y: 0 
     };
-  case Position.TOPRIGHT:
+  case Placement.TOPRIGHT:
     return { 
       x: windowPosition.width - componentPosition.width, 
       y: 0 
     };
-  case Position.CENTER:
+  case Placement.CENTER:
     return { 
       x: (windowPosition.width / 2) - (componentPosition.width / 2), 
       y: (windowPosition.height / 2) - (componentPosition.height / 2) 
     };
-  case Position.BOTTOMLEFT:
+  case Placement.BOTTOMLEFT:
     return { 
       x: 0, 
       y: windowPosition.height 
     };
-  case Position.BOTTOMRIGHT:
+  case Placement.BOTTOMRIGHT:
     return { 
       x: windowPosition.width - componentPosition.width, 
       y: windowPosition.height - componentPosition.height

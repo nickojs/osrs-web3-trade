@@ -5,15 +5,15 @@ export enum PositionComponents {
   MARKETPLACE = 'marketplace'
 }
 
-type PositionProperties = { width: number; height: number; onTop: boolean; };
+type PositionProperties = { width: number; height: number; };
 
-type PositionReducerState = Record<PositionComponents, PositionProperties>;
+type PositionReducerState = Record<PositionComponents, PositionProperties> & { onTop: PositionComponents };
 
 interface PositionContextProps{
   components: PositionReducerState;
   setWidth: (width: number, component: PositionComponents) => void;
   setHeight: (height: number, component: PositionComponents) => void;
-  setTop: (component: PositionComponents, status: boolean) => void;
+  setTop: (component: PositionComponents) => void;
 }
 
 const PositionContext = React.createContext<PositionContextProps>(
@@ -29,18 +29,17 @@ enum ActionTypes {
 type Actions =
   | { type: ActionTypes.SETWIDTH; data: { component: PositionComponents; width: number; } }
   | { type: ActionTypes.SETHEIGHT; data: { component: PositionComponents; height: number; } }
-  | { type: ActionTypes.SETTOP; data: { component: PositionComponents; status: boolean; } }
+  | { type: ActionTypes.SETTOP; component: PositionComponents; }
 
 const initialState: PositionReducerState = { 
+  onTop: PositionComponents.INVENTORY,
   inventory: { 
     width: 0,
-    height: 0,
-    onTop: false 
+    height: 0
   },
   marketplace: { 
     width: 0, 
-    height: 0, 
-    onTop: false 
+    height: 0 
   }
 };
 
@@ -65,10 +64,7 @@ const positionReducer = (state: PositionReducerState = initialState, action: Act
   case ActionTypes.SETTOP: 
     return { 
       ...state,
-      [action.data.component]: {
-        ...state[action.data.component],
-        onTop: action.data.status
-      }
+      onTop: action.component
     };
   default:
     throw new Error("[positionReducer] unidentified action received");
@@ -84,8 +80,8 @@ export const PositionProvider: React.FC = ({ children }) => {
   const setHeight = (height: number, component: PositionComponents) => {
     dispatch({ type: ActionTypes.SETHEIGHT, data: { height, component }});
   };
-  const setTop = (component: PositionComponents, status: boolean) => {
-    dispatch({ type: ActionTypes.SETTOP, data: { component, status }});
+  const setTop = (component: PositionComponents) => {
+    dispatch({ type: ActionTypes.SETTOP, component });
   };
 
   return (
