@@ -3,14 +3,12 @@ import { DraggableProps } from './interfaces';
 import { usePosition } from '../../../context/PositionContext';
 
 export default ({ children, component }: DraggableProps ): JSX.Element => {
-  const { setHeight, setWidth, setTop, components } = usePosition();
-  
-  const currentComponent = components[component];
-  const { onTop } = components;
+  const { setX, setY, setTop, components } = usePosition();
+  const { onTop, [component]: currentComponent } = components;
 
   const setPositionHandler = (x: number, y: number) => { 
-    setHeight(y, component);
-    setWidth(x, component);
+    setY(y, component);
+    setX(x, component);
   };
 
   return (
