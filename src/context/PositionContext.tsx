@@ -5,7 +5,15 @@ export enum PositionComponents {
   MARKETPLACE = 'marketplace'
 }
 
-type PositionProperties = { xAxis: number; yAxis: number; };
+export enum Placement { 
+  TOPLEFT,
+  TOPRIGHT,
+  BOTTOMLEFT,
+  BOTTOMRIGHT,
+  CENTER
+}
+
+type PositionProperties = { xAxis: number; yAxis: number; placement: Placement };
 
 type PositionReducerState = Record<PositionComponents, PositionProperties> & { onTop: PositionComponents };
 
@@ -35,11 +43,13 @@ const initialState: PositionReducerState = {
   onTop: PositionComponents.INVENTORY,
   inventory: { 
     xAxis: 0,
-    yAxis: 0
+    yAxis: 0,
+    placement: Placement.BOTTOMRIGHT
   },
   marketplace: { 
     xAxis: 0, 
-    yAxis: 0
+    yAxis: 0,
+    placement: Placement.CENTER
   }
 };
 
