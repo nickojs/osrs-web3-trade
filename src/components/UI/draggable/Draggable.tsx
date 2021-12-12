@@ -27,8 +27,8 @@ export default ({ children, startPosition, component }: DraggableProps ): JSX.El
   const setPositionHandler = (x: number, y: number) => { 
     setX(x);
     setY(y);
-    setWidth(x, component);
-    setHeight(y, component);
+    // setWidth(x, component);
+    // setHeight(y, component);
   };
 
   useEffect(() => { 
