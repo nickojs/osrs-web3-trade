@@ -1,10 +1,9 @@
 import { Rnd } from 'react-rnd';
 import { DraggableProps } from './interfaces';
-import { usePosition } from '../../../context/PositionContext';
+import usePosition from '../../../context/PositionContext';
 
 export default ({ children, component }: DraggableProps ): JSX.Element => {
-  const { setX, setY, setTop, components } = usePosition();
-  const { onTop, [component]: currentComponent } = components;
+  const { setX, setY, setTop, onTop } = usePosition();
 
   const setPositionHandler = (x: number, y: number) => { 
     setY(y, component);
@@ -18,6 +17,11 @@ export default ({ children, component }: DraggableProps ): JSX.Element => {
       onDragStop={(e, d) => setPositionHandler(d.x, d.y)}
       enableResizing={false}
       bounds="parent"
+      default={{
+        x: 0, y: 0,
+        width: 'auto',
+        height: 'auto'
+      }}
     >
       {children}
     </Rnd>

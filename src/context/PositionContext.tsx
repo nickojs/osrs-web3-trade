@@ -1,9 +1,6 @@
-import React, { useContext, useReducer } from 'react';
-
-export enum PositionComponents {
-  INVENTORY = 'inventory',
-  MARKETPLACE = 'marketplace'
-}
+import React, { useContext, useEffect, useReducer, useState } from 'react';
+import placementHandler from '../helpers/positionHandler';
+import useResize from '../hooks/useResize';
 
 export enum Placement { 
   TOPLEFT,
@@ -13,12 +10,24 @@ export enum Placement {
   CENTER
 }
 
-type PositionProperties = { xAxis: number; yAxis: number; placement: Placement };
+export enum PositionComponents {
+  INVENTORY = 'inventory',
+  MARKETPLACE = 'marketplace'
+}
 
-type PositionReducerState = Record<PositionComponents, PositionProperties> & { onTop: PositionComponents };
+export interface PositionProperties { 
+  xAxis: number; 
+  yAxis: number; 
+  width: number;
+  height: number;
+  placement: Placement;
+}
+
+type PositionReducerState = Record<PositionComponents, PositionProperties> 
 
 interface PositionContextProps{
   components: PositionReducerState;
+  onTop: PositionComponents;
   setX: (width: number, component: PositionComponents) => void;
   setY: (height: number, component: PositionComponents) => void;
   setTop: (component: PositionComponents) => void;
@@ -40,15 +49,18 @@ type Actions =
   | { type: ActionTypes.SETTOP; component: PositionComponents; }
 
 const initialState: PositionReducerState = { 
-  onTop: PositionComponents.INVENTORY,
-  inventory: { 
+  [PositionComponents.INVENTORY]: { 
     xAxis: 0,
     yAxis: 0,
+    width: 382,
+    height: 532,
     placement: Placement.BOTTOMRIGHT
   },
-  marketplace: { 
+  [PositionComponents.MARKETPLACE]: {
     xAxis: 0, 
     yAxis: 0,
+    width: 600,
+    height: 400,
     placement: Placement.CENTER
   }
 };
@@ -58,7 +70,7 @@ const positionReducer = (state: PositionReducerState = initialState, action: Act
   case ActionTypes.SETX: 
     return { 
       ...state,
-      [action.data.component]: {
+      [action.data.component]: { 
         ...state[action.data.component],
         xAxis: action.data.xAxis
       }
@@ -66,15 +78,10 @@ const positionReducer = (state: PositionReducerState = initialState, action: Act
   case ActionTypes.SETY: 
     return { 
       ...state,
-      [action.data.component]: {
+      [action.data.component]: { 
         ...state[action.data.component],
         yAxis: action.data.yAxis
       }
-    };
-  case ActionTypes.SETTOP: 
-    return { 
-      ...state,
-      onTop: action.component
     };
   default:
     throw new Error("[positionReducer] unidentified action received");
@@ -82,7 +89,9 @@ const positionReducer = (state: PositionReducerState = initialState, action: Act
 };
 
 export const PositionProvider: React.FC = ({ children }) => {
+  const [onTop, setOnTop] = useState<PositionComponents>(PositionComponents.INVENTORY);
   const [components, dispatch] = useReducer(positionReducer, initialState);
+  const windowSize = useResize();
 
   const setX = (xAxis: number, component: PositionComponents) => {
     dispatch({ type: ActionTypes.SETX, data: { xAxis, component }});
@@ -90,14 +99,21 @@ export const PositionProvider: React.FC = ({ children }) => {
   const setY = (yAxis: number, component: PositionComponents) => {
     dispatch({ type: ActionTypes.SETY, data: { yAxis, component }});
   };
-  const setTop = (component: PositionComponents) => {
-    dispatch({ type: ActionTypes.SETTOP, component });
-  };
+
+  const setTop = (component: PositionComponents) => setOnTop(component);
+
+  useEffect(() => { 
+    // make sure windowSize was initialized
+    if(windowSize.width > 0 ){ 
+      //
+    }
+  }, [windowSize]);
 
   return (
     <PositionContext.Provider
       value={{
         components,
+        onTop,
         setX,
         setY,
         setTop
@@ -108,7 +124,7 @@ export const PositionProvider: React.FC = ({ children }) => {
   );
 };
 
-export const usePosition = (): PositionContextProps => {
+export default (): PositionContextProps => {
   const context = useContext(PositionContext);
   return context;
 };
