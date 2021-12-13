@@ -1,18 +1,11 @@
-export enum Placement { 
-  TOPLEFT,
-  TOPRIGHT,
-  BOTTOMLEFT,
-  BOTTOMRIGHT,
-  CENTER
-}
-type PositionValues = { width: number; height: number };
+import { PositionProperties, Placement } from "../context/PositionContext";
 
 export default (
-  desiredPosition: Placement, 
-  componentPosition: PositionValues, 
-  windowPosition: PositionValues
+  component: PositionProperties,
+  window: { width: number, height: number }
 ): { x: number; y: number } => {
-  switch (desiredPosition) {
+  const { placement } = component;
+  switch (placement) {
   case Placement.TOPLEFT:
     return { 
       x: 0,
@@ -20,23 +13,23 @@ export default (
     };
   case Placement.TOPRIGHT:
     return { 
-      x: windowPosition.width - componentPosition.width, 
+      x: window.width - component.width, 
       y: 0 
     };
   case Placement.CENTER:
     return { 
-      x: (windowPosition.width / 2) - (componentPosition.width / 2), 
-      y: (windowPosition.height / 2) - (componentPosition.height / 2) 
+      x: (window.width / 2) - (component.width / 2), 
+      y: (window.height / 2) - (component.height / 2) 
     };
   case Placement.BOTTOMLEFT:
     return { 
       x: 0, 
-      y: windowPosition.height 
+      y: window.height 
     };
   case Placement.BOTTOMRIGHT:
     return { 
-      x: windowPosition.width - componentPosition.width, 
-      y: windowPosition.height - componentPosition.height
+      x: window.width - component.width, 
+      y: window.height - component.height
     };
   
   default:

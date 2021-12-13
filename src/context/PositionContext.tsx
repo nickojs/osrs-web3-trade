@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState, useCallback } from 'react';
 import placementHandler from '../helpers/positionHandler';
 import useResize from '../hooks/useResize';
 
@@ -93,21 +93,27 @@ export const PositionProvider: React.FC = ({ children }) => {
   const [components, dispatch] = useReducer(positionReducer, initialState);
   const windowSize = useResize();
 
-  const setX = (xAxis: number, component: PositionComponents) => {
+  const setX = useCallback((xAxis: number, component: PositionComponents) => {
     dispatch({ type: ActionTypes.SETX, data: { xAxis, component }});
-  };
-  const setY = (yAxis: number, component: PositionComponents) => {
-    dispatch({ type: ActionTypes.SETY, data: { yAxis, component }});
-  };
+  }, []);
 
-  const setTop = (component: PositionComponents) => setOnTop(component);
+  const setY = useCallback((yAxis: number, component: PositionComponents) => {
+    dispatch({ type: ActionTypes.SETY, data: { yAxis, component }});
+  }, []);
+
+  const setTop = useCallback((component: PositionComponents) => setOnTop(component), []);
 
   useEffect(() => { 
     // make sure windowSize was initialized
-    if(windowSize.width > 0 ){ 
-      //
+    if(windowSize.width > 0){ 
+      for (const [key, value] of Object.entries(components)) {
+        const { x, y } = placementHandler(value, windowSize);
+        const component = PositionComponents[key.toUpperCase() as keyof typeof PositionComponents];
+        setX(x, component);
+        setY(y, component);
+      }      
     }
-  }, [windowSize]);
+  }, [windowSize.width]);
 
   return (
     <PositionContext.Provider
