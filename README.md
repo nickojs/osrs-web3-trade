@@ -1,3 +1,2 @@
-This project depended on OSRSbox's API, which has been discontinued.
-
-More info: https://github.com/osrsbox/osrsbox-api
+I'm rebuilding this with direct access to Runescape's API!!!
+Got the backend up and running already 😎
