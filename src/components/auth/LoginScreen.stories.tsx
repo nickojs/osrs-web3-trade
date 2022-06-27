@@ -1,5 +1,6 @@
 import { Story, Meta } from '@storybook/react';
 import LoginScreen from './LoginScreen';
+import '../../global.css';
 
 export default {
   component: LoginScreen,
