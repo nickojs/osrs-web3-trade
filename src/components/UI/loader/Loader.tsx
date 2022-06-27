@@ -1,12 +1,9 @@
 import { LoaderContainer, LoaderInner } from './styles';
 
-export default (): JSX.Element => {
-  return (
-    <LoaderContainer>
-      <LoaderInner>
-        <p>Loading...</p>
-      </LoaderInner>
-    </LoaderContainer>
-  );
-};
-
+export default () => (
+  <LoaderContainer>
+    <LoaderInner>
+      <p>Loading...</p>
+    </LoaderInner>
+  </LoaderContainer>
+);

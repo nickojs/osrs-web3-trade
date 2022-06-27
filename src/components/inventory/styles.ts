@@ -66,7 +66,7 @@ export const ItemWrapper = styled.li<{ examine: string, displayInformative: bool
 
   &:before{
     content: "${({ examine }) => examine || 'No description available.'}";
-    opacity: ${({ displayInformative }) => displayInformative ? 1 : 0};
+    opacity: ${({ displayInformative }) => (displayInformative ? 1 : 0)};
     
     position: absolute;
     bottom: -5%; left: 0; 
@@ -74,7 +74,7 @@ export const ItemWrapper = styled.li<{ examine: string, displayInformative: bool
 
     height: 20px;
     width: ${({ examine }) => examine?.length || 24}ch;
-    z-index: ${({ displayInformative }) => displayInformative ? 2 : -1};
+    z-index: ${({ displayInformative }) => (displayInformative ? 2 : -1)};
     
     text-align: center;
     line-height: 20px;

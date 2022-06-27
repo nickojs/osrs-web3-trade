@@ -8,9 +8,9 @@ enum ActionTypes {
   DATA = 'DATA',
   RESET = 'RESET'
 }
-type APIError = { 
+type APIError = {
   _status: 'ERR';
-  _error: { 
+  _error: {
     code: number;
     message: string;
   }
@@ -33,6 +33,7 @@ const initialState: State = {
   loading: false
 };
 
+// eslint-disable-next-line default-param-last
 const requestReducer = (state: State = initialState, action: Actions) => {
   switch (action.type) {
   case 'LOADING':
@@ -65,24 +66,25 @@ const requestReducer = (state: State = initialState, action: Actions) => {
   }
 };
 
+// eslint-disable-next-line no-undef
 export default (params: Record<string, unknown>, endpoint: EndPoints): typeof requestState => {
   const [requestState, dispatch] = useReducer(requestReducer, initialState);
   const fetchData = useCallback(async () => {
-    if (Object.keys(params).length > 0) { 
+    if (Object.keys(params).length > 0) {
       dispatch({ type: ActionTypes.LOADING, status: true });
       try {
-        const request = await api({ 
-          url: endpoint, 
+        const request = await api({
+          url: endpoint,
           params: {
             where: { ...params }
-          } 
+          }
         });
         dispatch({ type: ActionTypes.DATA, data: request.data });
       } catch (err) {
         let errorMsg = 'unknown error';
         if (err instanceof Error) {
           const { _error: apiError } = err as unknown as APIError;
-          if (apiError) { 
+          if (apiError) {
             errorMsg = apiError.message;
           }
         }
