@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Press Start 2P';
+  src: local('Press Start 2P'),
+    url('./assets/fonts/press2p.ttf') format('woff2'),
+    url('./assets/fonts/press2p.ttf') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+* {
+  font-family: 'Press Start 2P', cursive;
+}
