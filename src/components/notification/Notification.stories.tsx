@@ -4,11 +4,7 @@ import useToast, { ToastMsg, ToastProvider, ToastType } from '../../context/Noti
 import '../../global.css';
 import Notification from './Notification';
 
-interface NotificationStoryProps extends ToastMsg {
-  show: boolean
-}
-
-const InjectStoryData = (args: NotificationStoryProps) => {
+const InjectStoryData = (args: ToastMsg) => {
   const { setToast } = useToast();
   const { message, type } = args;
 
@@ -37,7 +33,7 @@ export default {
   }
 } as Meta;
 
-const NotificationStory: Story<NotificationStoryProps> = (args) => (
+const NotificationStory: Story<ToastMsg> = (args) => (
   <ToastProvider>
     <InjectStoryData {...args} />
     <Notification />
