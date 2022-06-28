@@ -1,19 +1,25 @@
-const baseRequest = {
-  duplicate: false
-};
+import { AxiosRequestConfig, Method } from 'axios';
 
-export enum EndPoints {
-  ITEMS = 'items',
+enum Endpoints {
+  LOGIN = 'auth/login',
+  SEARCH = 'inventory/search'
 }
 
-export const searchRequest = (value: string): Record<string, unknown> => ({
-  $text: {
-    $search: value
-  },
-  ...baseRequest
+const configFactory = (
+  method: Method,
+  url: string,
+  body?: Record<string, unknown> | null,
+  params?: Record<string, unknown> | null
+): AxiosRequestConfig => ({
+  method,
+  url,
+  data: body,
+  params
 });
 
-export const getSingleItem = (id: number): Record<string, unknown> => ({
-  id,
-  ...baseRequest
+export const login = (username: string, password: string) => configFactory('POST', Endpoints.LOGIN, { username, password });
+
+export const search = (query: string) => configFactory('GET', Endpoints.SEARCH, null, {
+  category: 24,
+  name: query
 });
