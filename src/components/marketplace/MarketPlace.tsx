@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
-import { EndPoints, searchRequest } from '../../services/endpoints';
 import { Item } from '../inventory/interfaces';
 import {
   MarketPlace,
@@ -11,6 +10,7 @@ import {
 import ItemWrapper from '../inventory/ItemWrapper';
 import Loader from '../UI/loader/Loader';
 import useRequest from '../../hooks/useRequest';
+import { search as searchEndpoint } from '../../services/endpoints';
 
 export default () => {
   const [search, setSearch] = useState('');
@@ -20,10 +20,10 @@ export default () => {
   const searchHandler = (value: string) => setSearch(value);
   const debouncedSearchHandler = debounce(searchHandler, 500);
 
-  const { data, loading, error } = useRequest(params, EndPoints.ITEMS);
+  const { data, loading, error } = useRequest(params);
 
   useEffect(() => {
-    if (search.length > 0) setParams(searchRequest(search));
+    if (search.length > 0) setParams(searchEndpoint(search));
   }, [search]);
 
   useEffect(() => {

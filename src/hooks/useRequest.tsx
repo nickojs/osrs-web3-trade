@@ -1,6 +1,5 @@
 import { useReducer, useEffect, useCallback } from 'react';
 import { api } from '../services/api';
-import { EndPoints } from '../services/endpoints';
 
 enum ActionTypes {
   LOADING = 'LOADING',
@@ -67,18 +66,13 @@ const requestReducer = (state: State = initialState, action: Actions) => {
 };
 
 // eslint-disable-next-line no-undef
-export default (params: Record<string, unknown>, endpoint: EndPoints): typeof requestState => {
+export default (params: Record<string, unknown>): typeof requestState => {
   const [requestState, dispatch] = useReducer(requestReducer, initialState);
   const fetchData = useCallback(async () => {
     if (Object.keys(params).length > 0) {
       dispatch({ type: ActionTypes.LOADING, status: true });
       try {
-        const request = await api({
-          url: endpoint,
-          params: {
-            where: { ...params }
-          }
-        });
+        const request = await api(params);
         dispatch({ type: ActionTypes.DATA, data: request.data });
       } catch (err) {
         let errorMsg = 'unknown error';
@@ -97,7 +91,7 @@ export default (params: Record<string, unknown>, endpoint: EndPoints): typeof re
 
   useEffect(() => {
     fetchData();
-  }, [endpoint, fetchData]);
+  }, [params, fetchData]);
 
   const { data, loading, error } = requestState;
 
