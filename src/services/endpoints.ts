@@ -1,5 +1,15 @@
 import { AxiosRequestConfig, Method } from 'axios';
 
+export type AuthBody = {
+  username: string;
+  password: string;
+}
+
+export type SearchParams = {
+  category: number;
+  name: string;
+}
+
 enum Endpoints {
   LOGIN = 'auth/login',
   SEARCH = 'items/search'
@@ -17,9 +27,12 @@ const configFactory = (
   params
 });
 
-export const login = (username: string, password: string) => configFactory('POST', Endpoints.LOGIN, { username, password });
+export const login = (
+  username: string,
+  password: string
+): AxiosRequestConfig<AuthBody> => configFactory('POST', Endpoints.LOGIN, { username, password });
 
-export const search = (query: string) => configFactory('GET', Endpoints.SEARCH, null, {
-  category: 24,
-  name: query
+export const search = (query: SearchParams): AxiosRequestConfig => configFactory('GET', Endpoints.SEARCH, null, {
+  category: query.category,
+  name: query.name
 });
