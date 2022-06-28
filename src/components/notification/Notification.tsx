@@ -1,7 +1,7 @@
 // import useNotification from '../../context/NotificationContext'
 
 import useNotification from '../../context/NotificationContext';
-import { CloseButton, NotificationContainer } from './styles';
+import { CloseButton, NotificationContainer, NotificationMsg } from './styles';
 
 export default () => {
   const { dismiss, show, toast } = useNotification();
@@ -12,7 +12,7 @@ export default () => {
       <CloseButton type="button" onClick={dismiss}>
         close
       </CloseButton>
-      <p>{message}</p>
+      <NotificationMsg>{message}</NotificationMsg>
     </NotificationContainer>
   );
 };

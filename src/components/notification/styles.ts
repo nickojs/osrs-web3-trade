@@ -44,3 +44,8 @@ export const CloseButton = styled.button`
     cursor: pointer;
   }
 `;
+
+export const NotificationMsg = styled.p`
+  overflow-x: hidden;
+  padding: 12px;
+`;
