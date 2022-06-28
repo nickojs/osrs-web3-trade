@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-const resetInput = css` 
+export const resetInput = css` 
   -webkit-box-shadow:  none;
   -moz-box-shadow:  none;
   border: none;
