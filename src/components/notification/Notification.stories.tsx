@@ -9,25 +9,16 @@ interface NotificationStoryProps extends ToastMsg {
 }
 
 const InjectStoryData = (args: NotificationStoryProps) => {
-  const { setToast, displayOverride } = useToast();
-  const { message, show, type } = args;
+  const { setToast } = useToast();
+  const { message, type } = args;
 
   useEffect(() => {
     setToast({ message, type });
   }, [message, type]);
 
-  useEffect(() => {
-    displayOverride(show);
-  }, [show]);
-
-  useEffect(() => {
-    // overrides the default context value (false), to sync with story (true)
-    displayOverride(true);
-  }, []);
-
   return (
     <p>
-      Storybook data is being injected to the Notification Context
+      Storybook data is being injected into the Notification Context
     </p>
   );
 };
@@ -42,10 +33,6 @@ export default {
     },
     message: {
       type: 'string'
-    },
-    show: {
-      type: 'boolean',
-      defaultValue: true
     }
   }
 } as Meta;
@@ -59,7 +46,6 @@ const NotificationStory: Story<NotificationStoryProps> = (args) => (
 
 export const NotificationDefault = NotificationStory.bind({});
 NotificationDefault.args = {
-  show: true,
   message: 'notification',
   type: ToastType.SUCCESS
 };
