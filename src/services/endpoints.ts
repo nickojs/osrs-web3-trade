@@ -2,7 +2,7 @@ import { AxiosRequestConfig, Method } from 'axios';
 
 enum Endpoints {
   LOGIN = 'auth/login',
-  SEARCH = 'inventory/search'
+  SEARCH = 'items/search'
 }
 
 const configFactory = (
