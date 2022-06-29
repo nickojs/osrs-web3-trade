@@ -9,7 +9,11 @@ const toastColorHelper = {
 };
 
 export const NotificationContainer = styled.div<{ type: ToastType, show: boolean }>`
-  position: relative;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+
+  transform: translateX(-50%);
 
   display: ${({ show }) => (show ? 'flex' : 'none')};
   flex-direction: row;

@@ -15,13 +15,13 @@ type APIError = {
 type State = {
   loading: boolean;
   error: string | null;
-  data: Record<string, unknown> | null;
+  data: any | null;
 }
 
 type Actions =
   | { type: ActionTypes.LOADING; status: boolean; }
   | { type: ActionTypes.ERROR; error: string | null; }
-  | { type: ActionTypes.DATA; data: Record<string, unknown> | null; }
+  | { type: ActionTypes.DATA; data: any | null; }
   | { type: ActionTypes.RESET; }
 
 const initialState: State = {
