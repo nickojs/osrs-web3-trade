@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
     color: white;
   }
   
-  p{
+  * {
     font-family: 'Press Start 2P', cursive;
   }
 `;
