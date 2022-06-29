@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { generateErrorLabel } from '../../helpers/formValidator';
+import { useNavigate } from 'react-router-dom';
 import useRequest from '../../hooks/useRequest';
-import { AuthBody } from '../../services/endpoints';
+import useToast, { ToastType } from '../../context/NotificationContext';
+import useAuth from '../../hooks/useAuth';
+import { generateErrorLabel } from '../../helpers/formValidator';
+import { AuthBody, create, login } from '../../services/endpoints';
 import {
   ButtonWrapper,
   Container,
@@ -21,20 +24,52 @@ export default () => {
     handleSubmit,
     formState: { errors }
   } = useForm<AuthBody>();
-
   const [params, setParams] = useState({});
-  const onSubmit = (data: AuthBody) => setParams(data);
-
   const { data, loading, error } = useRequest(params);
+  const { setToast } = useToast();
+
+  const navigate = useNavigate();
+  const token = useAuth();
+
+  const onLogin = (formData: AuthBody) => {
+    const requestObj = login(formData.username, formData.password);
+    setParams(requestObj);
+  };
+
+  const onCreate = (formData: AuthBody) => {
+    const requestObj = create(formData.username, formData.password);
+    setParams(requestObj);
+  };
 
   useEffect(() => {
-    if (data) console.log(data);
-    if (error) console.log(error);
-  }, [data, error]);
+    if (error) {
+      setToast({ message: error, type: ToastType.ERROR });
+    }
+  }, [error]);
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (data) {
+      if (data.message) {
+        return setToast({ message: 'user created! please log in', type: ToastType.WARNING });
+      }
+
+      localStorage.setItem('auth_token', data.token);
+      dispatchEvent(new Event('storage'));
+
+      setToast({ message: 'redirecting to app...', type: ToastType.SUCCESS });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (token) {
+      setTimeout(() => navigate('/app'), 1500);
+    }
+  }, [token]);
 
   return (
     <Container>
-      <FormContainer onSubmit={handleSubmit(onSubmit)}>
+      <FormContainer>
         <LoginFormContainer>
           <InputWrapper>
             <RuneLabel htmlFor="username">
@@ -68,13 +103,17 @@ export default () => {
         <ButtonWrapper>
           <RuneButton
             disabled={Object.keys(errors).length > 0 || loading}
+            type="submit"
+            onClick={handleSubmit(onLogin)}
           >
-            New User
+            Existing User
           </RuneButton>
           <RuneButton
             disabled={Object.keys(errors).length > 0 || loading}
+            type="submit"
+            onClick={handleSubmit(onCreate)}
           >
-            Existing User
+            New User
           </RuneButton>
         </ButtonWrapper>
       </FormContainer>

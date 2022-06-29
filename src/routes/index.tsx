@@ -14,7 +14,7 @@ const routesArray = [
 const routes = (
   <Routes>
     {routesArray.map(({ Component, path }) => (
-      <Route path={path} element={<Component />} />
+      <Route key={path} path={path} element={<Component />} />
     ))}
   </Routes>
 );
