@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useReducer, useEffect, useCallback } from 'react';
 import { api } from '../services/api';
 
@@ -8,11 +9,8 @@ enum ActionTypes {
   RESET = 'RESET'
 }
 type APIError = {
-  _status: 'ERR';
-  _error: {
-    code: number;
-    message: string;
-  }
+  status: number;
+  error: string;
 }
 type State = {
   loading: boolean;
@@ -75,14 +73,8 @@ export default (params: Record<string, unknown>): typeof requestState => {
         const request = await api(params);
         dispatch({ type: ActionTypes.DATA, data: request.data });
       } catch (err) {
-        let errorMsg = 'unknown error';
-        if (err instanceof Error) {
-          const { _error: apiError } = err as unknown as APIError;
-          if (apiError) {
-            errorMsg = apiError.message;
-          }
-        }
-        dispatch({ type: ActionTypes.ERROR, error: errorMsg });
+        const typedError = err as AxiosError<APIError>;
+        dispatch({ type: ActionTypes.ERROR, error: typedError.response?.data.error || 'unknown error' });
       } finally {
         dispatch({ type: ActionTypes.LOADING, status: false });
       }
