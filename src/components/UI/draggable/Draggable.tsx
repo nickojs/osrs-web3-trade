@@ -2,14 +2,16 @@ import { Rnd } from 'react-rnd';
 import { DraggableProps } from './interfaces';
 import usePosition from '../../../context/PositionContext';
 
-export default ({ children, component }: DraggableProps ): JSX.Element => {
-  const { setX, setY, setTop, onTop, components } = usePosition();
+export default ({ children, component }: DraggableProps) => {
+  const {
+    setX, setY, setTop, onTop, components
+  } = usePosition();
   const { [component]: currentComponent } = components;
   const { xAxis: x, yAxis: y } = currentComponent;
 
-  const setPositionHandler = (x: number, y: number) => { 
-    setY(y, component);
-    setX(x, component);
+  const setPositionHandler = (X: number, Y: number) => {
+    setY(Y, component);
+    setX(X, component);
   };
 
   return (

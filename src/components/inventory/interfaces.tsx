@@ -1,9 +1,8 @@
-export interface Item { 
+export interface Item {
   id: number,
+  icon: string,
+  description: string,
   name: string,
-  examine: string,
-  url: string,
-  image: string // base64 string
 }
 export interface InventoryProps {
   items: Item[]

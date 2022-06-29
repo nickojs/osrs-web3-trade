@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import { Item } from '../inventory/interfaces';
@@ -10,42 +12,15 @@ import {
 import ItemWrapper from '../inventory/ItemWrapper';
 import Loader from '../UI/loader/Loader';
 import useRequest from '../../hooks/useRequest';
-import { search as searchEndpoint } from '../../services/endpoints';
+import { search as searchEndpoint, SearchParams } from '../../services/endpoints';
 
 export default () => {
-  const [search, setSearch] = useState('');
-  const [params, setParams] = useState({});
-  const [items, setItems] = useState<Item[]>([]);
+  // const [search, setSearch] = useState('');
+  // const [params, setParams] = useState<SearchParams>({} as SearchParams);
+  // const [items, setItems] = useState<Item[]>([]);
 
-  const searchHandler = (value: string) => setSearch(value);
+  const searchHandler = (value: string) => console.log(value);
   const debouncedSearchHandler = debounce(searchHandler, 500);
-
-  const { data, loading, error } = useRequest(params);
-
-  useEffect(() => {
-    if (search.length > 0) setParams(searchEndpoint(search));
-  }, [search]);
-
-  useEffect(() => {
-    if (loading || error) setItems([]);
-  }, [loading, error]);
-
-  useEffect(() => {
-    if (data) {
-      const { _items } = data as unknown as { _items: Record<string, string>[] };
-      const parseItems = _items.map(({
-        id, name, examine, wiki_url: url, icon: image
-      }) => ({
-        id,
-        name,
-        examine,
-        url,
-        image
-      }) as unknown as Item);
-
-      setItems(parseItems);
-    }
-  }, [data]);
 
   return (
     <MarketPlace>
@@ -55,7 +30,7 @@ export default () => {
         placeholder="Search for an item"
         onChange={(e) => debouncedSearchHandler(e.target.value)}
       />
-
+      {/*
       {loading && <Loader />}
 
       {error && <p>{JSON.stringify(error)}</p>}
@@ -64,7 +39,7 @@ export default () => {
         {items.length > 0 && items.map((item) => (
           <ItemWrapper key={item.id} item={item} />
         ))}
-      </ListView>
+      </ListView> */}
     </MarketPlace>
   );
 };

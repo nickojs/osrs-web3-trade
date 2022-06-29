@@ -1,8 +1,11 @@
-import React, { useContext, useEffect, useReducer, useState, useCallback } from 'react';
+/* eslint-disable no-use-before-define */
+import React, {
+  useContext, useEffect, useReducer, useState, useCallback
+} from 'react';
 import placementHandler from '../helpers/positionHandler';
 import useResize from '../hooks/useResize';
 
-export enum Placement { 
+export enum Placement {
   TOPLEFT,
   TOPRIGHT,
   BOTTOMLEFT,
@@ -15,15 +18,15 @@ export enum PositionComponents {
   MARKETPLACE = 'marketplace'
 }
 
-export interface PositionProperties { 
-  xAxis: number; 
-  yAxis: number; 
+export interface PositionProperties {
+  xAxis: number;
+  yAxis: number;
   width: number;
   height: number;
   placement: Placement;
 }
 
-type PositionReducerState = Record<PositionComponents, PositionProperties> 
+type PositionReducerState = Record<PositionComponents, PositionProperties>
 
 interface PositionContextProps{
   components: PositionReducerState;
@@ -48,8 +51,8 @@ type Actions =
   | { type: ActionTypes.SETY; data: { component: PositionComponents; yAxis: number; } }
   | { type: ActionTypes.SETTOP; component: PositionComponents; }
 
-const initialState: PositionReducerState = { 
-  [PositionComponents.INVENTORY]: { 
+const initialState: PositionReducerState = {
+  [PositionComponents.INVENTORY]: {
     xAxis: 0,
     yAxis: 0,
     width: 382,
@@ -57,7 +60,7 @@ const initialState: PositionReducerState = {
     placement: Placement.BOTTOMRIGHT
   },
   [PositionComponents.MARKETPLACE]: {
-    xAxis: 0, 
+    xAxis: 0,
     yAxis: 0,
     width: 600,
     height: 400,
@@ -65,26 +68,27 @@ const initialState: PositionReducerState = {
   }
 };
 
-const positionReducer = (state: PositionReducerState = initialState, action: Actions ) => {
+// eslint-disable-next-line default-param-last
+const positionReducer = (state: PositionReducerState = initialState, action: Actions) => {
   switch (action.type) {
-  case ActionTypes.SETX: 
-    return { 
+  case ActionTypes.SETX:
+    return {
       ...state,
-      [action.data.component]: { 
+      [action.data.component]: {
         ...state[action.data.component],
         xAxis: action.data.xAxis
       }
     };
-  case ActionTypes.SETY: 
-    return { 
+  case ActionTypes.SETY:
+    return {
       ...state,
-      [action.data.component]: { 
+      [action.data.component]: {
         ...state[action.data.component],
         yAxis: action.data.yAxis
       }
     };
   default:
-    throw new Error("[positionReducer] unidentified action received");
+    throw new Error('[positionReducer] unidentified action received');
   }
 };
 
@@ -94,29 +98,31 @@ export const PositionProvider: React.FC = ({ children }) => {
   const windowSize = useResize();
 
   const setX = useCallback((xAxis: number, component: PositionComponents) => {
-    dispatch({ type: ActionTypes.SETX, data: { xAxis, component }});
+    dispatch({ type: ActionTypes.SETX, data: { xAxis, component } });
   }, []);
 
   const setY = useCallback((yAxis: number, component: PositionComponents) => {
-    dispatch({ type: ActionTypes.SETY, data: { yAxis, component }});
+    dispatch({ type: ActionTypes.SETY, data: { yAxis, component } });
   }, []);
 
   const setTop = useCallback((component: PositionComponents) => setOnTop(component), []);
 
-  useEffect(() => { 
+  useEffect(() => {
     // make sure windowSize was initialized
-    if(windowSize.width > 0){ 
+    if (windowSize.width > 0) {
+      // eslint-disable-next-line no-restricted-syntax
       for (const [key, value] of Object.entries(components)) {
         const { x, y } = placementHandler(value, windowSize);
         const component = PositionComponents[key.toUpperCase() as keyof typeof PositionComponents];
         setX(x, component);
         setY(y, component);
-      }      
+      }
     }
   }, [windowSize.width]);
 
   return (
     <PositionContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         components,
         onTop,
