@@ -1,10 +1,15 @@
-import { GlobalStyle } from './globalStyles';
 import { PositionProvider } from './context/PositionContext';
+import { ToastProvider } from './context/NotificationContext';
+import { GlobalStyle } from './globalStyles';
+import Notification from './components/notification/Notification';
 import routes from './routes';
 
 export default () => (
-  <PositionProvider>
-    <GlobalStyle />
-    {routes}
-  </PositionProvider>
+  <ToastProvider>
+    <PositionProvider>
+      <GlobalStyle />
+      <Notification />
+      {routes}
+    </PositionProvider>
+  </ToastProvider>
 );
