@@ -1,12 +1,10 @@
 import { GlobalStyle } from './globalStyles';
-import Main from './Containers/Main';
 import { PositionProvider } from './context/PositionContext';
+import routes from './routes';
 
-export default (): JSX.Element => { 
-  return (
-    <PositionProvider>
-      <GlobalStyle />
-      <Main />
-    </PositionProvider>
-  );
-};
+export default () => (
+  <PositionProvider>
+    <GlobalStyle />
+    {routes}
+  </PositionProvider>
+);

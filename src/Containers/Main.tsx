@@ -4,18 +4,14 @@ import Draggable from '../components/UI/draggable/Draggable';
 import { PositionComponents } from '../context/PositionContext';
 import { Container } from './styles';
 
+export default () => (
+  <Container>
+    <Draggable component={PositionComponents.MARKETPLACE}>
+      <MakertPlace />
+    </Draggable>
 
-export default (): JSX.Element => { 
-  return (
-    <Container>
-      <Draggable component={PositionComponents.MARKETPLACE}>
-        <MakertPlace />
-      </Draggable>
-
-      <Draggable component={PositionComponents.INVENTORY}>
-        <Inventory items={[]}/>
-      </Draggable>
-    </Container>
-  );
-};
-
+    <Draggable component={PositionComponents.INVENTORY}>
+      <Inventory items={[]} />
+    </Draggable>
+  </Container>
+);
