@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosRequestConfig } from 'axios';
 import { useReducer, useEffect, useCallback } from 'react';
 import { api } from '../services/api';
 
@@ -64,7 +64,7 @@ const requestReducer = (state: State = initialState, action: Actions) => {
 };
 
 // eslint-disable-next-line no-undef
-export default (params: Record<string, unknown>): typeof requestState => {
+export default (params: AxiosRequestConfig): typeof requestState => {
   const [requestState, dispatch] = useReducer(requestReducer, initialState);
   const fetchData = useCallback(async () => {
     if (Object.keys(params).length > 0) {
