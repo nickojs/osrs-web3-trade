@@ -4,14 +4,18 @@ import { categories } from '../../services/endpoints';
 
 const categoriesObj = categories();
 
-export default () => {
+export interface CategorySelectorProps {
+  onChange: (value: number) => void;
+}
+
+export default ({ onChange }: CategorySelectorProps) => {
   const { data } = useQuery('categories', () => api(categoriesObj));
 
   return (
-    <select>
+    <select onChange={(e) => onChange(parseInt(e.target.value, 10))}>
       <option>Select one</option>
       {data && data.data.map((d: any) => (
-        <option key={d.id} id={d.id}>{d.data}</option>
+        <option key={d.id} value={d.id}>{d.data}</option>
       ))}
     </select>
     );
