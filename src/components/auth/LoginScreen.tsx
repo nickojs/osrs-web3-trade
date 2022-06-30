@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import useRequest from '../../hooks/useRequest';
+import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
 import useToast, { ToastType } from '../../context/NotificationContext';
-import useAuth from '../../hooks/useAuth';
 import { generateErrorLabel } from '../../helpers/formValidator';
 import { AuthBody, create, login } from '../../services/endpoints';
 import {
@@ -17,6 +15,20 @@ import {
   RuneInput,
   RuneLabel
 } from './styles';
+import { api } from '../../services/api';
+import handleError from '../../helpers/handleError';
+
+type FormType = 'login' | 'create'
+
+interface MutationRequest {
+  data: AuthBody;
+  type: FormType
+}
+
+type SuccessResponse = {
+  message?: string;
+  token?: string;
+}
 
 export default () => {
   const {
@@ -24,48 +36,46 @@ export default () => {
     handleSubmit,
     formState: { errors }
   } = useForm<AuthBody>();
-  const [params, setParams] = useState({});
-  const { data, loading, error } = useRequest(params);
   const { setToast } = useToast();
 
-  const navigate = useNavigate();
-  const token = useAuth();
+  const submitMutation = useMutation(({ data, type }: MutationRequest) => {
+    const { username, password } = data;
+    let requestObj = {};
 
-  const onLogin = (formData: AuthBody) => {
-    const requestObj = login(formData.username, formData.password);
-    setParams(requestObj);
-  };
-
-  const onCreate = (formData: AuthBody) => {
-    const requestObj = create(formData.username, formData.password);
-    setParams(requestObj);
-  };
-
-  useEffect(() => {
-    if (error) {
-      setToast({ message: error, type: ToastType.ERROR });
+    if (type === 'login') {
+      requestObj = login(username, password);
     }
-  }, [error]);
 
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (data) {
-      if (data.message) {
-        return setToast({ message: 'user created! please log in', type: ToastType.WARNING });
+    if (type === 'create') {
+      requestObj = create(username, password);
+    }
+
+    return api(requestObj);
+  }, {
+    onError: (error) => {
+      const typedError = error as AxiosError;
+      const errorFeedback = handleError(typedError);
+      return setToast({ message: errorFeedback, type: ToastType.ERROR });
+    },
+    onSuccess: (data) => {
+      if (data) {
+        const typedData = data as SuccessResponse;
+        if (typedData.message) {
+          setToast({ message: 'user created! please log in', type: ToastType.WARNING });
+        }
+
+        if (typedData.token) {
+          localStorage.setItem('auth_token', typedData.token);
+          dispatchEvent(new Event('storage'));
+          setToast({ message: 'redirecting to app...', type: ToastType.SUCCESS });
+        }
       }
-
-      localStorage.setItem('auth_token', data.token);
-      dispatchEvent(new Event('storage'));
-
-      setToast({ message: 'redirecting to app...', type: ToastType.SUCCESS });
     }
-  }, [data]);
+  });
 
-  useEffect(() => {
-    if (token) {
-      setTimeout(() => navigate('/app'), 1500);
-    }
-  }, [token]);
+  const onSubmit = (formData: AuthBody, type: FormType) => {
+    submitMutation.mutate({ data: formData, type });
+  };
 
   return (
     <Container>
@@ -102,16 +112,16 @@ export default () => {
         </LoginFormContainer>
         <ButtonWrapper>
           <RuneButton
-            disabled={Object.keys(errors).length > 0 || loading}
+            disabled={Object.keys(errors).length > 0 || submitMutation.isLoading}
             type="submit"
-            onClick={handleSubmit(onLogin)}
+            onClick={handleSubmit((data) => onSubmit(data, 'login'))}
           >
             Existing User
           </RuneButton>
           <RuneButton
-            disabled={Object.keys(errors).length > 0 || loading}
+            disabled={Object.keys(errors).length > 0 || submitMutation.isLoading}
             type="submit"
-            onClick={handleSubmit(onCreate)}
+            onClick={handleSubmit((data) => onSubmit(data, 'create'))}
           >
             New User
           </RuneButton>
