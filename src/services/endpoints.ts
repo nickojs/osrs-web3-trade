@@ -13,7 +13,8 @@ export type SearchParams = {
 enum Endpoints {
   LOGIN = 'auth/login',
   CREATE = 'user/',
-  SEARCH = 'items/search'
+  SEARCH = 'items/search',
+  CATEGORIES = 'items/categories'
 }
 
 const configFactory = (
@@ -42,3 +43,5 @@ export const search = (query: SearchParams): AxiosRequestConfig => configFactory
   category: query.category,
   name: query.name
 });
+
+export const categories = () => configFactory('GET', Endpoints.CATEGORIES, null, null);
