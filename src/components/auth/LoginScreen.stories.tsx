@@ -1,6 +1,9 @@
 import { Story, Meta } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import LoginScreen from './LoginScreen';
 import '../../global.css';
+
+const queryClient = new QueryClient();
 
 export default {
   component: LoginScreen,
@@ -10,4 +13,10 @@ export default {
 const LoginScreenStory: Story<any> = (args) => <LoginScreen {...args} />;
 
 export const LoginScreenDefault = LoginScreenStory.bind({});
-LoginScreenDefault.args = {};
+LoginScreenDefault.decorators = [
+  (Component) => (
+    <QueryClientProvider client={queryClient}>
+      <Component />
+    </QueryClientProvider>
+  )
+];
