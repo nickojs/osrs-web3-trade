@@ -6,7 +6,6 @@ import {
   MarketPlace,
   ListView,
   MakertPlaceTitle,
-  Search,
   SearchContainer
 } from './styles';
 import ItemWrapper from '../inventory/ItemWrapper';
@@ -14,6 +13,7 @@ import Loader from '../UI/loader/Loader';
 import { search as searchEndpoint } from '../../services/endpoints';
 import CategorySelector from '../categorySelector/CategorySelector';
 import { api } from '../../services/api';
+import SearchInput from '../UI/input/SearchInput';
 
 export default () => {
   const [search, setSearch] = useState('');
@@ -43,8 +43,7 @@ export default () => {
     <MarketPlace>
       <MakertPlaceTitle>MarketPlace</MakertPlaceTitle>
       <SearchContainer>
-        <Search
-          type="text"
+        <SearchInput
           placeholder="Search for an item"
           onChange={(e) => debouncedSearchHandler(e.target.value)}
           disabled={isLoading}
