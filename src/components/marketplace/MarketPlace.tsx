@@ -6,7 +6,8 @@ import {
   MarketPlace,
   ListView,
   MakertPlaceTitle,
-  Search
+  Search,
+  SearchContainer
 } from './styles';
 import ItemWrapper from '../inventory/ItemWrapper';
 import Loader from '../UI/loader/Loader';
@@ -41,14 +42,20 @@ export default () => {
   return (
     <MarketPlace>
       <MakertPlaceTitle>MarketPlace</MakertPlaceTitle>
-      <div>
+      <SearchContainer>
         <Search
           type="text"
           placeholder="Search for an item"
           onChange={(e) => debouncedSearchHandler(e.target.value)}
+          disabled={isLoading}
         />
-        <CategorySelector onChange={categorySelectorHandler} />
-      </div>
+        <CategorySelector
+          onChange={categorySelectorHandler}
+          disabled={isLoading}
+        />
+      </SearchContainer>
+
+      {isLoading && <Loader />}
 
       <ListView>
         {items.length > 0 && items.map((item) => (
@@ -56,7 +63,6 @@ export default () => {
         ))}
       </ListView>
 
-      {isLoading && <Loader />}
       {error && <p>{JSON.stringify(error)}</p>}
     </MarketPlace>
   );

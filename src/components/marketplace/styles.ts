@@ -4,6 +4,7 @@ export const MarketPlace = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  padding: 12px;
 
   width: 600px;
   height: 400px;
@@ -32,17 +33,30 @@ export const ListView = styled.ul`
 export const MakertPlaceTitle = styled.h1`
   width: 100%;
 
-  font-size: 46px;
-  font-family: system;
+  font-size: 32px;
   text-align: center;
 
   color: white;
   text-shadow: black 0px 2px 5px;
 `;
 
+export const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+  
+  margin: 24px auto;
+
+  & select {
+    width: 120px;
+  }
+`;
+
 export const Search = styled.input`
   padding: 12px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   
   line-height: 24px;
