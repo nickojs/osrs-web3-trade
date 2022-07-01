@@ -6,7 +6,12 @@ const queryClient = new QueryClient();
 
 export default {
   component: MarketPlace,
-  title: 'Containers/MarketPlace'
+  title: 'Containers/MarketPlace',
+  parameters: {
+    actions: {
+      handles: ['onchange', 'input']
+    }
+  }
 } as Meta;
 
 const MarketPlaceStory: Story = (args) => <MarketPlace {...args} />;
