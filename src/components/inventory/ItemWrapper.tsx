@@ -13,7 +13,7 @@ export default ({ item }: { item: Item }) => {
       displayInformative={click}
       onClick={clickHandler}
     >
-      <img src={`data:image/png;base64, ${icon}`} alt="Item's icon" />
+      <img src={icon} alt="Item's icon" />
     </ItemWrapper>
   );
 };
