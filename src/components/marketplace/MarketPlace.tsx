@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import debounce from 'lodash.debounce';
 import { useQuery } from 'react-query';
 import { Item } from '../inventory/interfaces';
 import {
@@ -22,10 +21,6 @@ export default () => {
   const [items, setItems] = useState<Item[]>([]);
 
   const { data, error, isLoading } = useQuery('items', () => api(params), { enabled: Object.keys(params).length > 0 });
-
-  const searchHandler = (value: string) => setSearch(value);
-  const debouncedSearchHandler = debounce(searchHandler, 500);
-
   const categorySelectorHandler = (value: number) => setCategory(value);
 
   useEffect(() => {
@@ -44,8 +39,9 @@ export default () => {
       <MakertPlaceTitle>MarketPlace</MakertPlaceTitle>
       <SearchContainer>
         <SearchInput
+          onChange={(e) => setSearch(e.target.value)}
+          debounceDelay={500}
           placeholder="Search for an item"
-          onChange={(e) => debouncedSearchHandler(e.target.value)}
           disabled={isLoading}
         />
         <CategorySelector
