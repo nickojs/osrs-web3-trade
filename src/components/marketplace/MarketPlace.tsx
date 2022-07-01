@@ -20,7 +20,7 @@ export default () => {
   const [params, setParams] = useState({});
   const [items, setItems] = useState<Item[]>([]);
 
-  const { data, error, isLoading } = useQuery('items', () => api(params), { enabled: Object.keys(params).length > 0 });
+  const { data, error, isLoading } = useQuery(['items', params], () => api(params), { enabled: Object.keys(params).length > 0 });
   const categorySelectorHandler = (value: number) => setCategory(value);
 
   useEffect(() => {
@@ -33,6 +33,10 @@ export default () => {
   useEffect(() => {
     if (data) setItems(data.data);
   }, [data]);
+
+  useEffect(() => {
+    if (isLoading) setItems([]);
+  }, [isLoading]);
 
   return (
     <MarketPlace>
