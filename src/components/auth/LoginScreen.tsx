@@ -57,18 +57,15 @@ export default () => {
       const errorFeedback = handleError(typedError);
       return setToast({ message: errorFeedback, type: ToastType.ERROR });
     },
-    onSuccess: (data) => {
-      if (data) {
-        const typedData = data as SuccessResponse;
-        if (typedData.message) {
-          setToast({ message: 'user created! please log in', type: ToastType.WARNING });
-        }
-
-        if (typedData.token) {
-          localStorage.setItem('auth_token', typedData.token);
-          dispatchEvent(new Event('storage'));
-          setToast({ message: 'redirecting to app...', type: ToastType.SUCCESS });
-        }
+    onSuccess: (d) => {
+      const { data }: { data: SuccessResponse} = d;
+      if (data.message) {
+        setToast({ message: 'user created! please log in', type: ToastType.WARNING });
+      }
+      if (data.token) {
+        localStorage.setItem('auth_token', data.token);
+        dispatchEvent(new Event('storage'));
+        setToast({ message: 'redirecting to app...', type: ToastType.SUCCESS });
       }
     }
   });

@@ -12,6 +12,8 @@ export const NotificationContainer = styled.div<{ type: ToastType, show: boolean
   position: absolute;
   top: 12px;
   left: 50%;
+  
+  z-index: 666;
 
   transform: translateX(-50%);
 

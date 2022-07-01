@@ -10,12 +10,12 @@ export const resetInput = css`
 `;
 
 export const Container = styled.div`
-  max-width: 460px;
+  min-width: 460px;
   height: 220px;
 
   border-radius: 12px;
-  border: 6px double black;
-  box-shadow: 0 0 0 2px black;
+  border: 6px outset black;
+  box-shadow: 0 0 0 1px black;
 
   background: rgb(90,92,102);
   background: linear-gradient(117deg, rgba(90,92,102,1) 0%, rgba(76,78,89,1) 35%, rgba(44,45,52,1) 100%); 
