@@ -8,6 +8,7 @@ margin: 0 auto;
 line-height: 24px;
 text-align: center;
 
+box-sizing: border-box;
 border-radius: 12px;
 border: 3px inset #292014;
 

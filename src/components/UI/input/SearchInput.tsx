@@ -6,11 +6,12 @@ export interface SearchInputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled: boolean;
   placeholder: string;
-  debounceDelay: number;
+  // eslint-disable-next-line react/require-default-props
+  debounceDelay?: number;
 }
 
 export default ({
- onChange, placeholder, disabled, debounceDelay
+ onChange, placeholder, disabled, debounceDelay = 500
 }: SearchInputProps) => {
   const debouncedSearchHandler = debounce(onChange, debounceDelay);
 
