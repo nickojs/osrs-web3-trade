@@ -47,4 +47,6 @@ export const search = (query: SearchParams): AxiosRequestConfig => configFactory
 
 export const categories = () => configFactory('GET', Endpoints.CATEGORIES, null, null);
 
-export const searchUsers = () => configFactory('GET', Endpoints.SEARCH_USERS, null, null);
+export const searchUsers = (query: string) => configFactory('GET', Endpoints.SEARCH_USERS, null, {
+  name: query
+});
