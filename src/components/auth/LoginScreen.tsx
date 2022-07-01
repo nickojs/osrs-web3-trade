@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import useToast, { ToastType } from '../../context/NotificationContext';
+import useAuth from '../../context/AuthContext';
 import { generateErrorLabel } from '../../helpers/formValidator';
 import { AuthBody, create, login } from '../../services/endpoints';
 import {
@@ -37,6 +38,7 @@ export default () => {
     formState: { errors }
   } = useForm<AuthBody>();
   const { setToast } = useToast();
+  const { setToken } = useAuth();
 
   const submitMutation = useMutation(({ data, type }: MutationRequest) => {
     const { username, password } = data;
@@ -63,8 +65,7 @@ export default () => {
         setToast({ message: 'user created! please log in', type: ToastType.WARNING });
       }
       if (data.token) {
-        localStorage.setItem('auth_token', data.token);
-        dispatchEvent(new Event('storage'));
+        setToken(data.token);
         setToast({ message: 'redirecting to app...', type: ToastType.SUCCESS });
       }
     }

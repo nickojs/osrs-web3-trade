@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginScreen from '../components/auth/LoginScreen';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../context/AuthContext';
 import { LoginContainer } from './styles';
 
 export default () => {
-  const token = useAuth();
+  const { token } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
