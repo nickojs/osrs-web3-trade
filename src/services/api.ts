@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import axios from 'axios';
 
 const determineUrl = () => {
@@ -18,3 +19,13 @@ export const api = axios.create({
   baseURL,
   responseType: 'json'
 });
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('auth_token');
+  if (token) {
+    config.headers = {
+      Authorization: `Bearer ${token}`
+    };
+  }
+  return config;
+}, (error) => Promise.reject(error));
