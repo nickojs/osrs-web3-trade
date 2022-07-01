@@ -1,7 +1,7 @@
 import { Story, Meta } from '@storybook/react';
 import { InventoryProps } from './interfaces';
 import Inventory from './Inventory';
-import items from './mocks/items';
+import { items } from '../../mocks/data';
 
 export default {
   component: Inventory,
