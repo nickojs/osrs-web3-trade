@@ -19,6 +19,11 @@ export type PicType = {
   pic: string;
 }
 
+export const defaultProfilePic: PicType = {
+  id: 0,
+  pic: mockedFace1
+};
+
 export interface PicSelectorProps {
   onSelect: (pic: PicType) => void;
   selectedPic: PicType;

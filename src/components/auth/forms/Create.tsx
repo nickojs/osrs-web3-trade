@@ -17,7 +17,7 @@ import {
 } from '../styles';
 import { api } from '../../../services/api';
 import handleError from '../../../helpers/handleError';
-import ProfilePicSelector, { PicType } from '../../profilePicSelector/ProfilePicSelector';
+import ProfilePicSelector, { PicType, defaultProfilePic } from '../../profilePicSelector/ProfilePicSelector';
 
 interface AuthBodyWithPic extends AuthBody {
   picId: number;
@@ -38,7 +38,7 @@ export default ({ onCancel }: { onCancel: () => void }) => {
     formState: { errors }
   } = useForm<AuthBody>();
   const { setToast } = useToast();
-  const [pic, setPic] = useState<PicType>({} as PicType);
+  const [pic, setPic] = useState<PicType>(defaultProfilePic);
 
   const setPicHandler = (data: PicType) => setPic(data);
 
