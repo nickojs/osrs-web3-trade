@@ -1,8 +1,42 @@
 import styled, { css } from 'styled-components';
 import inventoryBg from '../../assets/inventory.png';
+import disclaimer from '../../assets/menu/disclaimer.png';
+import inventory from '../../assets/menu/inventory.png';
+import logout from '../../assets/menu/logout.png';
+import trade from '../../assets/menu/trade.png';
+import userlist from '../../assets/menu/userlist.png';
+
+export type InventoryMenuType = 'disclaimer' | 'inventory' | 'logout' | 'trade' | 'userlist'
+
+const inventoryMenuHelper = (value: InventoryMenuType) => {
+  switch (value) {
+    case 'disclaimer':
+      return disclaimer;
+    case 'inventory':
+      return inventory;
+    case 'logout':
+      return logout;
+    case 'trade':
+      return trade;
+    case 'userlist':
+      return userlist;
+    default:
+      throw new Error('[inventoryMenuHelper]: unknown InventoryMenu type received');
+  }
+};
 
 const selectedBorder = css`
   border: 2px inset white;
+`;
+
+const resetButton = css`
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+
+  background: transparent;
 `;
 
 export const Inventory = styled.div`
@@ -41,6 +75,36 @@ export const InventoryContent = styled.ul`
   height: 412px;
 
   list-style: none;
+`;
+
+export const InventoryMenu = styled.nav`
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+
+  height: 55px;
+`;
+
+export const InventoryMenuEntry = styled.button<{ icon: InventoryMenuType }>`
+  ${resetButton}
+
+  width: 48px;
+  height: 48px;
+  
+  align-self: center;
+  cursor: pointer;
+
+  background-image: url(${({ icon }) => inventoryMenuHelper(icon)});
+  background-size: 40px 40px;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 export const ItemWrapper = styled.li<{ examine: string, displayInformative: boolean }>`
