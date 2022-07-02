@@ -17,7 +17,8 @@ import {
 } from '../styles';
 import { api } from '../../../services/api';
 import handleError from '../../../helpers/handleError';
-import ProfilePicSelector, { PicType, defaultProfilePic } from '../../profilePicSelector/ProfilePicSelector';
+import ProfilePicSelector, { PicType } from '../../profilePicSelector/ProfilePicSelector';
+import { defaultProfilePic } from '../../../constants/profilePic';
 
 interface AuthBodyWithPic extends AuthBody {
   picId: number;
