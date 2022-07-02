@@ -11,7 +11,8 @@ export const resetInput = css`
 
 export const Container = styled.div`
   min-width: 460px;
-  height: 220px;
+  min-height: 120px;
+  padding: 24px;
 
   border-radius: 12px;
   border: 6px outset black;
@@ -19,6 +20,11 @@ export const Container = styled.div`
 
   background: rgb(90,92,102);
   background: linear-gradient(117deg, rgba(90,92,102,1) 0%, rgba(76,78,89,1) 35%, rgba(44,45,52,1) 100%); 
+
+  & p{ 
+    text-align: center;
+    color: white;
+  }
 `;
 
 export const FormContainer = styled.form`
@@ -33,7 +39,6 @@ export const RuneInput = styled.input`
   ${resetInput}
   color: gold;
   border-bottom: 1px solid black;
-  max-width: 160px;
 `;
 
 export const RuneLabel = styled.label`
@@ -57,7 +62,7 @@ export const RuneButton = styled.button`
   cursor: pointer;
 
   &:hover{
-    background: white;
+    background: lightgray;
   }
 
   &:disabled{
@@ -82,7 +87,6 @@ export const InputWrapper = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   margin-bottom: 12px;
-  max-width: 300px;
 `;
 
 export const ButtonWrapper = styled.div`
@@ -91,6 +95,7 @@ export const ButtonWrapper = styled.div`
   justify-content: space-around;
 
   width: 100%;
+  margin-top: 16px;
 `;
 
 export const ErrorMessage = styled.span`

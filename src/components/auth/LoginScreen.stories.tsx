@@ -16,7 +16,9 @@ export const LoginScreenDefault = LoginScreenStory.bind({});
 LoginScreenDefault.decorators = [
   (Component) => (
     <QueryClientProvider client={queryClient}>
-      <Component />
+      <div style={{ width: '400px' }}>
+        <Component />
+      </div>
     </QueryClientProvider>
   )
 ];

@@ -37,8 +37,9 @@ export const login = (
 
 export const create = (
   username: string,
-  password: string
-): AxiosRequestConfig<AuthBody> => configFactory('POST', Endpoints.CREATE, { username, password });
+  password: string,
+  picId: number
+): AxiosRequestConfig<AuthBody> => configFactory('POST', Endpoints.CREATE, { username, password, picId });
 
 export const search = (query: SearchParams): AxiosRequestConfig => configFactory('GET', Endpoints.SEARCH, null, {
   category: query.category,
