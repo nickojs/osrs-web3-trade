@@ -11,7 +11,7 @@ export type User = {
 export interface AuthProps {
   token: string;
   user: User,
-  getToken: () => void;
+  getToken: () => string | undefined;
   clearSession: () => void;
   setToken: (value: string) => void;
 }
@@ -24,7 +24,19 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [user, setUser] = useState<User>({} as User);
 
-  const getTokenHandler = () => token;
+  const getTokenHandler = () => {
+    try {
+      if (token) return token;
+      if (!token) {
+        const localToken = localStorage.getItem('auth_token');
+        if (!localToken) return undefined;
+        return localToken;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return undefined;
+  };
 
   const setTokenHandler = (value: string) => {
     localStorage.setItem('auth_token', value);

@@ -9,13 +9,15 @@ interface ProtectedRoute {
 }
 
 export default ({ children }: ProtectedRoute) => {
-  const { token } = useAuth();
+  const { getToken } = useAuth();
   const { setToast } = useToast();
   const navigate = useNavigate();
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
     try {
+      const token = getToken();
+
       if (!token) return navigate('/');
       const decodedToken = jwtDecode<User>(token);
 
