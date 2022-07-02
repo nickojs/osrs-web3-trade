@@ -7,13 +7,13 @@ import Loader from '../UI/loader/Loader';
 import {
   Container,
   IdSpan,
- UserContainer, UserDataContainer, UserList, UserProfilePic
+  UserContainer, UserDataContainer, UserList
 } from './styles';
 
 export type UserStatus = 'online' | 'away' | 'busy'
 
 interface User {
-  userId: string;
+  id: string;
   username: string;
   picture: string;
   status: UserStatus
@@ -23,7 +23,7 @@ export default () => {
   const [search, setSearch] = useState('');
   const [userList, setUserList] = useState<User[]>([]);
   const [params, setParams] = useState({});
-  const { data, error, isLoading } = useQuery('items', () => api(params), { enabled: Object.keys(params).length > 0 });
+  const { data, error, isLoading } = useQuery(['items', params], () => api(params), { enabled: Object.keys(params).length > 0 });
 
   const searchHandler = (value: string) => setSearch(value);
 
@@ -47,21 +47,21 @@ export default () => {
         disabled={isLoading}
       />
       {userList && (
-      <UserList>
-        {userList.map((user) => (
-          <UserContainer status={user.status}>
-            <UserProfilePic src={user.picture} alt="profile pic" />
-            <UserDataContainer>
-              <IdSpan>
-                {user.userId.substring(0, 12)}
-                ...
-              </IdSpan>
-              <span>{user.username}</span>
-            </UserDataContainer>
-          </UserContainer>
-        ))}
-        {error && <p>{JSON.stringify(error)}</p>}
-      </UserList>
+        <UserList>
+          {userList.map((user) => (
+            <UserContainer status={user.status || 'online'}>
+              {/* <UserProfilePic src={user.picture} alt="profile pic" /> */}
+              <UserDataContainer>
+                <IdSpan>
+                  {user.id.substring(0, 12)}
+                  ...
+                </IdSpan>
+                <span>{user.username}</span>
+              </UserDataContainer>
+            </UserContainer>
+          ))}
+          {error && <p>{JSON.stringify(error)}</p>}
+        </UserList>
       )}
 
       {isLoading && (<Loader />)}

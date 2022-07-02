@@ -3,19 +3,19 @@ import { AxiosRequestConfig, Method } from 'axios';
 export type AuthBody = {
   username: string;
   password: string;
-}
+};
 
 export type SearchParams = {
   category: number;
   name: string;
-}
+};
 
 enum Endpoints {
   LOGIN = 'auth/login',
   CREATE = 'user/',
   SEARCH = 'items/search',
   CATEGORIES = 'items/categories',
-  SEARCH_USERS = 'user/search'
+  SEARCH_USERS = 'user/search',
 }
 
 const configFactory = (
@@ -48,5 +48,5 @@ export const search = (query: SearchParams): AxiosRequestConfig => configFactory
 export const categories = () => configFactory('GET', Endpoints.CATEGORIES, null, null);
 
 export const searchUsers = (query: string) => configFactory('GET', Endpoints.SEARCH_USERS, null, {
-  name: query
+  username: query
 });

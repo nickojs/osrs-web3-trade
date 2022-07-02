@@ -15,7 +15,8 @@ export enum Placement {
 
 export enum PositionComponents {
   INVENTORY = 'inventory',
-  MARKETPLACE = 'marketplace'
+  MARKETPLACE = 'marketplace',
+  USERLIST = 'userlist'
 }
 
 export interface PositionProperties {
@@ -28,7 +29,7 @@ export interface PositionProperties {
 
 type PositionReducerState = Record<PositionComponents, PositionProperties>
 
-interface PositionContextProps{
+interface PositionContextProps {
   components: PositionReducerState;
   onTop: PositionComponents;
   setX: (width: number, component: PositionComponents) => void;
@@ -65,30 +66,37 @@ const initialState: PositionReducerState = {
     width: 600,
     height: 400,
     placement: Placement.CENTER
+  },
+  [PositionComponents.USERLIST]: {
+    xAxis: 0,
+    yAxis: 0,
+    width: 600,
+    height: 400,
+    placement: Placement.BOTTOMLEFT
   }
 };
 
 // eslint-disable-next-line default-param-last
 const positionReducer = (state: PositionReducerState = initialState, action: Actions) => {
   switch (action.type) {
-  case ActionTypes.SETX:
-    return {
-      ...state,
-      [action.data.component]: {
-        ...state[action.data.component],
-        xAxis: action.data.xAxis
-      }
-    };
-  case ActionTypes.SETY:
-    return {
-      ...state,
-      [action.data.component]: {
-        ...state[action.data.component],
-        yAxis: action.data.yAxis
-      }
-    };
-  default:
-    throw new Error('[positionReducer] unidentified action received');
+    case ActionTypes.SETX:
+      return {
+        ...state,
+        [action.data.component]: {
+          ...state[action.data.component],
+          xAxis: action.data.xAxis
+        }
+      };
+    case ActionTypes.SETY:
+      return {
+        ...state,
+        [action.data.component]: {
+          ...state[action.data.component],
+          yAxis: action.data.yAxis
+        }
+      };
+    default:
+      throw new Error('[positionReducer] unidentified action received');
   }
 };
 
