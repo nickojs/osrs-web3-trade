@@ -1,22 +1,36 @@
+import { useEffect } from 'react';
 import MakertPlace from '../components/marketplace/MarketPlace';
 import Inventory from '../components/inventory/Inventory';
 import Draggable from '../components/UI/draggable/Draggable';
-import { PositionComponents } from '../context/PositionContext';
-import { Container } from './styles';
 import UserList from '../components/userList/UserList';
+import { PositionComponents } from '../context/PositionContext';
+import useSocket from '../context/SocketContext';
+import useAuth from '../context/AuthContext';
+import { Container } from './styles';
 
-export default () => (
-  <Container>
-    <Draggable component={PositionComponents.USERLIST}>
-      <UserList />
-    </Draggable>
+export default () => {
+  const { afterConnect } = useSocket();
+  const { user } = useAuth();
 
-    <Draggable component={PositionComponents.MARKETPLACE}>
-      <MakertPlace />
-    </Draggable>
+  useEffect(() => {
+    if (user) {
+      afterConnect({ userId: user.id, username: user.username });
+    }
+  }, [user]);
 
-    <Draggable component={PositionComponents.INVENTORY}>
-      <Inventory items={[]} />
-    </Draggable>
-  </Container>
-);
+  return (
+    <Container>
+      <Draggable component={PositionComponents.USERLIST}>
+        <UserList />
+      </Draggable>
+
+      <Draggable component={PositionComponents.MARKETPLACE}>
+        <MakertPlace />
+      </Draggable>
+
+      <Draggable component={PositionComponents.INVENTORY}>
+        <Inventory items={[]} />
+      </Draggable>
+    </Container>
+  );
+};
