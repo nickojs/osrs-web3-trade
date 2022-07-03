@@ -12,7 +12,7 @@ const determineUrl = () => {
   }
 };
 
-const baseURL = determineUrl();
+export const baseURL = determineUrl();
 
 export const api = axios.create({
   method: 'GET',
