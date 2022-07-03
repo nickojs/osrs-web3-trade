@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import useSocket from '../../context/SocketContext';
 import profilepics from '../../constants/profilePic';
 import { api } from '../../services/api';
 import { searchUsers } from '../../services/endpoints';
@@ -27,7 +28,7 @@ export default () => {
   const [userList, setUserList] = useState<User[]>([]);
   const [params, setParams] = useState({});
   const { data, error, isLoading } = useQuery(['items', params], () => api(params), { enabled: Object.keys(params).length > 0 });
-
+  const { initTrade } = useSocket();
   const searchHandler = (value: string) => setSearch(value);
 
   useEffect(() => {
@@ -54,7 +55,10 @@ export default () => {
           {userList.map((user) => {
             const profilePic = getProfilePic(parseInt(user.profilePicId, 10));
             return (
-              <UserContainer status={user.status || 'online'}>
+              <UserContainer
+                status={user.status || 'online'}
+                onClick={() => initTrade({ targetId: user.id })}
+              >
                 {profilePic && <UserProfilePic src={profilePic} alt="profile pic" />}
                 <UserDataContainer>
                   <IdSpan>

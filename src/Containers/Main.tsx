@@ -6,17 +6,25 @@ import UserList from '../components/userList/UserList';
 import { PositionComponents } from '../context/PositionContext';
 import useSocket from '../context/SocketContext';
 import useAuth from '../context/AuthContext';
+import useToast, { ToastType } from '../context/NotificationContext';
 import { Container } from './styles';
 
 export default () => {
-  const { afterConnect } = useSocket();
+  const { afterConnect, tradeRequest } = useSocket();
   const { user } = useAuth();
+  const { setToast } = useToast();
 
   useEffect(() => {
     if (user) {
       afterConnect({ userId: user.id, username: user.username });
     }
   }, [user]);
+
+  useEffect(() => {
+    if (tradeRequest && tradeRequest.message) {
+      setToast({ message: tradeRequest.message, type: ToastType.WARNING });
+    }
+  }, [tradeRequest]);
 
   return (
     <Container>
