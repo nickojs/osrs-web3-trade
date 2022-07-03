@@ -11,6 +11,10 @@ export enum ToastType {
 export type ToastMsg = {
   message: string;
   type: ToastType
+  actions?: {
+    accept: () => void;
+    reject: () => void;
+  }
 }
 
 export interface ToastProperties {

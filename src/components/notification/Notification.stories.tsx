@@ -4,6 +4,10 @@ import useToast, { ToastMsg, ToastProvider, ToastType } from '../../context/Noti
 import '../../global.css';
 import Notification from './Notification';
 
+interface NotificationStoryProps extends ToastMsg {
+  timeout: number;
+}
+
 const InjectStoryData = (args: ToastMsg) => {
   const { setToast } = useToast();
   const { message, type } = args;
@@ -33,15 +37,30 @@ export default {
   }
 } as Meta;
 
-const NotificationStory: Story<ToastMsg> = (args) => (
-  <ToastProvider>
-    <InjectStoryData {...args} />
-    <Notification />
-  </ToastProvider>
-);
+const NotificationStory: Story<NotificationStoryProps> = (args) => {
+  const { timeout, actions } = args;
+  return (
+    <ToastProvider>
+      <InjectStoryData {...args} />
+      <Notification timeout={timeout} actions={actions || undefined} />
+    </ToastProvider>
+  );
+};
 
 export const NotificationDefault = NotificationStory.bind({});
 NotificationDefault.args = {
   message: 'notification',
-  type: ToastType.SUCCESS
+  type: ToastType.SUCCESS,
+  timeout: 600000
+};
+
+export const NotificationWithActions = NotificationStory.bind({});
+NotificationWithActions.args = {
+  message: 'notification',
+  type: ToastType.WARNING,
+  timeout: 600000,
+  actions: {
+    accept: () => console.log('accept'),
+    reject: () => console.log('reject')
+  }
 };

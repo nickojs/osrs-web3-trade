@@ -18,15 +18,21 @@ export const NotificationContainer = styled.div<{ type: ToastType, show: boolean
   transform: translateX(-50%);
 
   display: ${({ show }) => (show ? 'flex' : 'none')};
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
   width: 460px;
-  height: 60px;
+  max-height: 300px;
 
   border-radius: 12px;
   background-color: ${({ type }) => toastColorHelper[type]};
+
+  & p { 
+    margin: 2px;
+    padding: 24px 0;
+    text-align: center;
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -54,4 +60,14 @@ export const CloseButton = styled.button`
 export const NotificationMsg = styled.p`
   overflow-x: hidden;
   padding: 12px;
+`;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  
+  width: 220px;
+  height: 24px;
+  padding: 6px 0 24px 0;
 `;
