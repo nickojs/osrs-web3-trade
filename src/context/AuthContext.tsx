@@ -56,6 +56,14 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }, [token]);
 
+  useEffect(() => {
+    const onLoadToken = getTokenHandler();
+    if (onLoadToken) {
+      const userData = jwtDecode<User>(onLoadToken);
+      setUser(userData);
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
