@@ -1,4 +1,5 @@
 import { Story, Meta } from '@storybook/react';
+import { items } from '../../mocks/data';
 import TradeScreen, { TradeScreenProps } from './TradeScreen';
 
 export default {
@@ -10,15 +11,7 @@ const TradeScreenStory: Story<TradeScreenProps> = (args) => <TradeScreen {...arg
 
 export const TradeScreenDefault = TradeScreenStory.bind({});
 TradeScreenDefault.args = {
-  recipient: {
-    ack: false,
-    available: true,
-    offeringItems: [],
-    username: 'recipient'
-  },
-  sender: {
-    available: true,
-    ack: false,
-    offeringItems: []
-  }
+  recipientName: 'fulano',
+  receivingItems: items,
+  sendingItems: items
 };

@@ -1,9 +1,8 @@
-import { User } from '../../context/AuthContext';
 import { Item } from '../inventory/interfaces';
+import ItemWrapper from '../inventory/ItemWrapper';
 import {
  Button,
  ButtonContainer,
- InventoryData,
  YourTrade,
  OtherTrade,
  Title,
@@ -13,33 +12,20 @@ import {
  TradeTitle
 } from './styles';
 
-interface TradeUser extends Partial<User> {
-  available: boolean;
-  offeringItems: Item[];
-  ack: boolean;
-}
-
 export interface TradeScreenProps {
-  sender: TradeUser, // you
-  recipient: TradeUser // user that you'll be trading with
+  receivingItems: Item[],
+  sendingItems: Item[],
+  recipientName: string
 }
 
-export default ({ recipient, sender }: TradeScreenProps) => {
-  const {
-    available: recipientAvailable,
-    offeringItems: recipientItems,
-    username: recipientName,
-    ack: recipientAck
-  } = recipient;
-  const {
-    offeringItems: senderItems
-  } = sender;
+export default ({ receivingItems, sendingItems, recipientName }: TradeScreenProps) => {
+  console.log('hi ');
 
   return (
     <TradeGrid>
       <TradeTitle>
         <Title>
-          {recipientAvailable
+          {recipientName
               ? `Trading with: ${recipientName}`
               : `Waiting ${recipientName} to connect...`}
         </Title>
@@ -47,7 +33,9 @@ export default ({ recipient, sender }: TradeScreenProps) => {
       <YourTrade>
         <Text>Your offer</Text>
         <TradeItemsContainer>
-          {senderItems && senderItems.map((item) => <p>{item.name}</p>)}
+          {sendingItems.map((item) => (
+            <ItemWrapper item={item} />
+          ))}
         </TradeItemsContainer>
 
       </YourTrade>
@@ -58,22 +46,21 @@ export default ({ recipient, sender }: TradeScreenProps) => {
           offer
         </Text>
         <TradeItemsContainer>
-          {recipientItems && recipientItems.map((item) => <p>{item.name}</p>)}
+          {receivingItems.map((item) => (
+            <ItemWrapper item={item} />
+          ))}
         </TradeItemsContainer>
 
-        {recipientAck && (
+        {/* {recipientAck && (
           <p>
             {recipientName}
             {' '}
             has accepted the trade
           </p>
-        )}
+        )} */}
 
       </OtherTrade>
       <ButtonContainer>
-        <InventoryData>
-          allow trade ?
-        </InventoryData>
         <Button
           // disabled={!allowTrade}
           // onClick={onAccept}

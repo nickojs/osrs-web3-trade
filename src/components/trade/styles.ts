@@ -5,10 +5,6 @@ const disabledGrid = css`
   cursor: not-allowed;
 `;
 
-// interface ButtonProps {
-//   color: 'red' | 'lime';
-// }
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,15 +60,13 @@ export const OtherTrade = styled(Container)`
 
 export const ButtonContainer = styled.div`
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
+  top: 100%; left: 50%;
+  transform: translate(-50%, -120%);
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-
-  height: 250px;
 `;
 
 const ContainerBaseStyle = css`
@@ -87,8 +81,9 @@ const ContainerBaseStyle = css`
 
 export const Button = styled.button`
   ${ContainerBaseStyle};  
-  cursor: pointer;
+  width: 120px;
 
+  cursor: pointer;
   color: ${({ color }) => color};
 
   :disabled { 
@@ -126,7 +121,8 @@ export const TradeItemsContainer = styled.div`
 
   overflow-y: auto;
   height: 250px;
-  width: 200px;
+  width: 240px;
 
   pointer-events: none;
+  list-style: none;
 `;
