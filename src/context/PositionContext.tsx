@@ -25,6 +25,7 @@ export interface PositionProperties {
   width: number;
   height: number;
   placement: Placement;
+  display: boolean;
 }
 
 type PositionReducerState = Record<PositionComponents, PositionProperties>
@@ -35,6 +36,7 @@ interface PositionContextProps {
   setX: (width: number, component: PositionComponents) => void;
   setY: (height: number, component: PositionComponents) => void;
   setTop: (component: PositionComponents) => void;
+  toggle: (component: PositionComponents) => void;
 }
 
 const PositionContext = React.createContext<PositionContextProps>(
@@ -44,13 +46,15 @@ const PositionContext = React.createContext<PositionContextProps>(
 enum ActionTypes {
   SETX = 'SET_X_AXIS',
   SETY = 'SET_Y_AXIS',
-  SETTOP = 'SETTOP'
+  SETTOP = 'SETTOP',
+  TOGGLE = 'TOGGLE'
 }
 
 type Actions =
   | { type: ActionTypes.SETX; data: { component: PositionComponents; xAxis: number; } }
   | { type: ActionTypes.SETY; data: { component: PositionComponents; yAxis: number; } }
   | { type: ActionTypes.SETTOP; component: PositionComponents; }
+  | { type: ActionTypes.TOGGLE; component: PositionComponents; }
 
 const initialState: PositionReducerState = {
   [PositionComponents.INVENTORY]: {
@@ -58,21 +62,24 @@ const initialState: PositionReducerState = {
     yAxis: 0,
     width: 382,
     height: 532,
-    placement: Placement.BOTTOMRIGHT
+    placement: Placement.BOTTOMRIGHT,
+    display: true
   },
   [PositionComponents.MARKETPLACE]: {
     xAxis: 0,
     yAxis: 0,
     width: 600,
     height: 400,
-    placement: Placement.CENTER
+    placement: Placement.CENTER,
+    display: false
   },
   [PositionComponents.USERLIST]: {
     xAxis: 0,
     yAxis: 0,
     width: 600,
     height: 400,
-    placement: Placement.TOPLEFT
+    placement: Placement.TOPLEFT,
+    display: false
   }
 };
 
@@ -95,6 +102,14 @@ const positionReducer = (state: PositionReducerState = initialState, action: Act
           yAxis: action.data.yAxis
         }
       };
+    case ActionTypes.TOGGLE:
+      return {
+        ...state,
+        [action.component]: {
+          ...state[action.component],
+          display: !state[action.component].display
+        }
+      };
     default:
       throw new Error('[positionReducer] unidentified action received');
   }
@@ -114,6 +129,10 @@ export const PositionProvider: React.FC = ({ children }) => {
   }, []);
 
   const setTop = useCallback((component: PositionComponents) => setOnTop(component), []);
+
+  const toggleHandler = useCallback((component: PositionComponents) => {
+    dispatch({ type: ActionTypes.TOGGLE, component });
+  }, []);
 
   useEffect(() => {
     // make sure windowSize was initialized
@@ -136,7 +155,8 @@ export const PositionProvider: React.FC = ({ children }) => {
         onTop,
         setX,
         setY,
-        setTop
+        setTop,
+        toggle: toggleHandler
       }}
     >
       {children}

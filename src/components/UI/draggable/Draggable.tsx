@@ -7,7 +7,7 @@ export default ({ children, component }: DraggableProps) => {
     setX, setY, setTop, onTop, components
   } = usePosition();
   const { [component]: currentComponent } = components;
-  const { xAxis: x, yAxis: y } = currentComponent;
+  const { xAxis: x, yAxis: y, display } = currentComponent;
 
   const setPositionHandler = (X: number, Y: number) => {
     setY(Y, component);
@@ -16,7 +16,10 @@ export default ({ children, component }: DraggableProps) => {
 
   return (
     <Rnd
-      style={{ zIndex: onTop === component ? 999 : 0 }}
+      style={{
+        zIndex: onTop === component ? 999 : 0,
+        display: display ? 'block' : 'none'
+      }}
       onDragStart={() => setTop(component)}
       onDragStop={(e, d) => setPositionHandler(d.x, d.y)}
       enableResizing={false}
