@@ -4,8 +4,8 @@ import usePosition from '../../../context/PositionContext';
 
 export default ({ children, component }: DraggableProps) => {
   const {
-    setX, setY, setTop, onTop, components
-  } = usePosition();
+ setX, setY, setTop, onTop, components
+} = usePosition();
   const { [component]: currentComponent } = components;
   const { xAxis: x, yAxis: y, display } = currentComponent;
 

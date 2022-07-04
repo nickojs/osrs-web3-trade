@@ -3,7 +3,7 @@ import Inventory from '../components/inventory/Inventory';
 import Draggable from '../components/UI/draggable/Draggable';
 import UserList from '../components/userList/UserList';
 import { PositionComponents } from '../context/PositionContext';
-import SocketHandler from '../components/SocketHandler/SocketHandler';
+import SocketHandler from '../components/socketHandler/SocketHandler';
 import { Container } from './styles';
 
 export default () => (

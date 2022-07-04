@@ -32,9 +32,6 @@ export default () => {
   }, {
     onSuccess: () => {
       setToast({ message: 'added to the inventory', type: ToastType.SUCCESS });
-    },
-    onError: () => {
-      setToast({ message: 'couldnt add to inventory', type: ToastType.ERROR });
     }
   });
 

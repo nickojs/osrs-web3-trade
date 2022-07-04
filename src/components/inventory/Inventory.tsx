@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import usePosition, { PositionComponents } from '../../context/PositionContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
 import ItemWrapper from './ItemWrapper';
-import { fetchInventory } from '../../services/endpoints';
+import { fetchInventory, removeFromInventory } from '../../services/endpoints';
 import { api } from '../../services/api';
 import Loader from '../UI/loader/Loader';
 import {
@@ -20,14 +21,35 @@ const parseInventory = (apiInventory: Record<string, any>) => ({
 });
 
 export default () => {
-  const { user } = useAuth();
+  const { user, clearSession } = useAuth();
   const { toggle } = usePosition();
   const { setToast } = useToast();
+  const navigate = useNavigate();
 
-  const { data, isLoading, error } = useQuery(['fetchInventory', user], () => {
+  const logout = () => {
+    clearSession();
+    setToast({ message: 'logout in progress...', type: ToastType.WARNING });
+    setTimeout(() => navigate('/'), 1500);
+  };
+
+  const {
+  data, isLoading, error, refetch, isRefetching
+  } = useQuery(['fetchInventory', user], () => {
     const fetchInventoryObj = fetchInventory(user.username);
     return api(fetchInventoryObj);
   });
+
+  const removeFromInventoryMutation = useMutation(({ item }: { item: Item }) => {
+    const removeFromInventoryObj = removeFromInventory(item);
+    return api(removeFromInventoryObj);
+  }, {
+    onSuccess: () => {
+      setToast({ message: 'removed from the inventory', type: ToastType.SUCCESS });
+      refetch();
+    }
+  });
+
+  const onRemoveFromInventory = (item: Item) => removeFromInventoryMutation.mutate({ item });
 
   useEffect(() => {
     if (error) {
@@ -53,13 +75,19 @@ export default () => {
         <div />
         <InventoryMenuEntry
           icon="logout"
+          onClick={logout}
         />
       </InventoryMenu>
       <InventoryContent>
-        {isLoading && <Loader />}
-        {data && data.data?.inventory && data?.data.inventory.map((item: Item) => (
-          <ItemWrapper key={item.id} item={parseInventory(item)} />
-        ))}
+        {(isLoading || isRefetching) ? <Loader /> : (
+          data && data.data?.inventory && data?.data.inventory.map((item: Item) => (
+            <ItemWrapper
+              key={item.id}
+              item={parseInventory(item)}
+              onClick={() => onRemoveFromInventory(item)}
+            />
+          ))
+        )}
       </InventoryContent>
     </Inventory>
   );

@@ -108,7 +108,7 @@ export const InventoryMenuEntry = styled.button<{ icon: InventoryMenuType }>`
 `;
 
 export const ItemWrapper = styled.div`
-  width: 55px;
+width: 55px;
   height: 55px;
   padding: 6px;
   margin: 6px;

@@ -18,6 +18,7 @@ enum Endpoints {
   CATEGORIES = 'items/categories',
   SEARCH_USERS = 'user/search',
   ADD_TO_INVENTORY = 'items/inventory/add',
+  REMOVE_FROM_INVENTORY = 'items/inventory/remove',
 }
 
 const configFactory = (
@@ -55,5 +56,7 @@ export const searchUsers = (query: string) => configFactory('GET', Endpoints.SEA
 });
 
 export const addToInventory = (item: Item) => configFactory('POST', Endpoints.ADD_TO_INVENTORY, { item });
+
+export const removeFromInventory = (item: Item) => configFactory('POST', Endpoints.REMOVE_FROM_INVENTORY, { item });
 
 export const fetchInventory = (query: string) => configFactory('GET', Endpoints.USER + query, null, null);

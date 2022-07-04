@@ -1,9 +1,14 @@
+/* eslint-disable react/require-default-props */
 import { useState } from 'react';
 import { Item } from './interfaces';
 import { Container, ItemWrapper, Tooltip } from './styles';
 
-// eslint-disable-next-line react/require-default-props
-export default ({ item, onClick }: { item: Item, onClick?: () => void; }) => {
+interface ItemWrapperProps {
+  item: Item;
+  onClick?: () => void;
+}
+
+export default ({ item, onClick }: ItemWrapperProps) => {
   const { icon, name } = item;
   const [hover, setHover] = useState(false);
   const clickHandler = () => {

@@ -66,6 +66,7 @@ export const SocketProvider: React.FC = ({ children }) => {
 
   const acceptTrade = () => {
     client?.emit('acceptTradeInit', { tradingId: tradeRequest.data.user.userId });
+    setOpenTradeScreen(true);
   };
 
   return (

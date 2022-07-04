@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import React from 'react';
 import { api } from '../../services/api';
 import { categories } from '../../services/endpoints';
 
@@ -12,9 +13,13 @@ export interface CategorySelectorProps {
 export default ({ onChange, disabled }: CategorySelectorProps) => {
   const { data } = useQuery('categories', () => api(categoriesObj));
 
+  const onChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onChange(parseInt(e.target.value, 10));
+  };
+
   return (
     <select
-      onChange={(e) => onChange(parseInt(e.target.value, 10))}
+      onChange={(e) => onChangeHandler(e)}
       disabled={disabled}
     >
       <option>Select one</option>
