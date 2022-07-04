@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, Method } from 'axios';
+import { Item } from '../components/inventory/interfaces';
 
 export type AuthBody = {
   username: string;
@@ -12,10 +13,11 @@ export type SearchParams = {
 
 enum Endpoints {
   LOGIN = 'auth/login',
-  CREATE = 'user/',
+  USER = 'user/',
   SEARCH = 'items/search',
   CATEGORIES = 'items/categories',
   SEARCH_USERS = 'user/search',
+  ADD_TO_INVENTORY = 'items/inventory/add',
 }
 
 const configFactory = (
@@ -39,7 +41,7 @@ export const create = (
   username: string,
   password: string,
   profilePicId: number
-): AxiosRequestConfig<AuthBody> => configFactory('POST', Endpoints.CREATE, { username, password, profilePicId });
+): AxiosRequestConfig<AuthBody> => configFactory('POST', Endpoints.USER, { username, password, profilePicId });
 
 export const search = (query: SearchParams): AxiosRequestConfig => configFactory('GET', Endpoints.SEARCH, null, {
   category: query.category,
@@ -51,3 +53,7 @@ export const categories = () => configFactory('GET', Endpoints.CATEGORIES, null,
 export const searchUsers = (query: string) => configFactory('GET', Endpoints.SEARCH_USERS, null, {
   username: query
 });
+
+export const addToInventory = (item: Item) => configFactory('POST', Endpoints.ADD_TO_INVENTORY, { item });
+
+export const fetchInventory = (query: string) => configFactory('GET', Endpoints.USER + query, null, null);

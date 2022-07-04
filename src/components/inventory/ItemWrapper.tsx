@@ -1,19 +1,29 @@
 import { useState } from 'react';
 import { Item } from './interfaces';
-import { ItemWrapper } from './styles';
+import { Container, ItemWrapper, Tooltip } from './styles';
 
-export default ({ item }: { item: Item }) => {
-  const { description, icon } = item;
-  const [click, setClick] = useState(false);
-  const clickHandler = () => setClick(!click);
+// eslint-disable-next-line react/require-default-props
+export default ({ item, onClick }: { item: Item, onClick?: () => void; }) => {
+  const { icon, name } = item;
+  const [hover, setHover] = useState(false);
+  const clickHandler = () => {
+    if (onClick) onClick();
+  };
 
   return (
-    <ItemWrapper
-      examine={description}
-      displayInformative={click}
-      onClick={clickHandler}
-    >
-      <img src={icon} alt="Item's icon" />
-    </ItemWrapper>
+    <Container>
+      {hover && (
+      <Tooltip>
+        {name}
+      </Tooltip>
+    )}
+      <ItemWrapper
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onClick={clickHandler}
+      >
+        <img src={icon} alt={name} />
+      </ItemWrapper>
+    </Container>
   );
 };

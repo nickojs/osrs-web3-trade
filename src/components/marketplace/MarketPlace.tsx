@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { Item } from '../inventory/interfaces';
 import {
   MarketPlace,
@@ -7,14 +7,17 @@ import {
   MakertPlaceTitle,
   SearchContainer
 } from './styles';
+import useToast, { ToastType } from '../../context/NotificationContext';
 import ItemWrapper from '../inventory/ItemWrapper';
 import Loader from '../UI/loader/Loader';
-import { search as searchEndpoint } from '../../services/endpoints';
+import { addToInventory, search as searchEndpoint } from '../../services/endpoints';
 import CategorySelector from '../categorySelector/CategorySelector';
 import { api } from '../../services/api';
 import SearchInput from '../UI/input/SearchInput';
 
 export default () => {
+  const { setToast } = useToast();
+
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState(-1);
   const [params, setParams] = useState({});
@@ -22,6 +25,20 @@ export default () => {
 
   const { data, error, isLoading } = useQuery(['items', params], () => api(params), { enabled: Object.keys(params).length > 0 });
   const categorySelectorHandler = (value: number) => setCategory(value);
+
+  const addToInventoryMutation = useMutation(({ item }: { item: Item }) => {
+    const addToInventoryObj = addToInventory(item);
+    return api(addToInventoryObj);
+  }, {
+    onSuccess: () => {
+      setToast({ message: 'added to the inventory', type: ToastType.SUCCESS });
+    },
+    onError: () => {
+      setToast({ message: 'couldnt add to inventory', type: ToastType.ERROR });
+    }
+  });
+
+  const onAddToInventory = (item: Item) => addToInventoryMutation.mutate({ item });
 
   useEffect(() => {
     if (search.length > 0 && category >= 0) {
@@ -58,7 +75,11 @@ export default () => {
 
       <ListView>
         {items.length > 0 && items.map((item) => (
-          <ItemWrapper key={item.id} item={item} />
+          <ItemWrapper
+            key={item.id}
+            item={item}
+            onClick={() => onAddToInventory(item)}
+          />
         ))}
       </ListView>
 

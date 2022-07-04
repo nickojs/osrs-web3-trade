@@ -25,10 +25,6 @@ const inventoryMenuHelper = (value: InventoryMenuType) => {
   }
 };
 
-const selectedBorder = css`
-  border: 2px inset white;
-`;
-
 const resetButton = css`
   border: none;
   margin: 0;
@@ -37,6 +33,10 @@ const resetButton = css`
   overflow: visible;
 
   background: transparent;
+`;
+
+export const Container = styled.div`
+  position: relative;
 `;
 
 export const Inventory = styled.div`
@@ -107,8 +107,7 @@ export const InventoryMenuEntry = styled.button<{ icon: InventoryMenuType }>`
   background-repeat: no-repeat;
 `;
 
-export const ItemWrapper = styled.li<{ examine: string, displayInformative: boolean }>`
-  position: relative;
+export const ItemWrapper = styled.div`
   width: 55px;
   height: 55px;
   padding: 6px;
@@ -121,36 +120,30 @@ export const ItemWrapper = styled.li<{ examine: string, displayInformative: bool
   color: white;
 
   border: 2px solid transparent;
-  ${({ displayInformative }) => displayInformative && selectedBorder};
 
   img { 
     width: 100%;
     height: 100%;
   }
 
-  &:before{
-    content: "${({ examine }) => examine || 'No description available.'}";
-    opacity: ${({ displayInformative }) => (displayInformative ? 1 : 0)};
-    
-    position: absolute;
-    bottom: -5%; left: 0; 
-    transform: translateX(-50%);
-
-    height: 20px;
-    width: ${({ examine }) => examine?.length || 24}ch;
-    z-index: ${({ displayInformative }) => (displayInformative ? 2 : -1)};
-    
-    text-align: center;
-    line-height: 20px;
-
-    background: #5d5447;
-    border: 3px double black;
-
-    transition: .3s opacity;
-  }
-
   &:hover {
     cursor: pointer;
-    ${selectedBorder}
   }
+`;
+
+export const Tooltip = styled.div`
+  position: absolute;
+  top: 50%; left: -100%; 
+  transform: translate(-50%, -50%);
+
+  width: 150px;
+  z-index: 2;
+  
+  text-align: center;
+  line-height: 20px;
+
+  background: #5d5447;
+  border: 3px double black;
+
+  transition: .3s opacity;
 `;
