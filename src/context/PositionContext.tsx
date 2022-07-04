@@ -72,7 +72,7 @@ const initialState: PositionReducerState = {
     yAxis: 0,
     width: 600,
     height: 400,
-    placement: Placement.BOTTOMLEFT
+    placement: Placement.TOPLEFT
   }
 };
 
