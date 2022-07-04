@@ -18,7 +18,7 @@ export default () => (
       </Draggable>
 
       <Draggable component={PositionComponents.INVENTORY}>
-        <Inventory items={[]} />
+        <Inventory />
       </Draggable>
     </Container>
   </SocketHandler>
