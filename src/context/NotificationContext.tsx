@@ -10,7 +10,8 @@ export enum ToastType {
 
 export type ToastMsg = {
   message: string;
-  type: ToastType
+  type: ToastType;
+  timeout?: number;
   actions?: {
     accept: () => void;
     reject: () => void;

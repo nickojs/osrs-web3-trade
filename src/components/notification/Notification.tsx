@@ -7,20 +7,12 @@ import {
  ActionsContainer, CloseButton, NotificationContainer, NotificationMsg
 } from './styles';
 
-interface NotificationProps {
-  actions?: {
-    accept: () => void;
-    reject: () => void;
-  }
-  timeout?: number
-}
-
-export default ({ actions, timeout }: NotificationProps) => {
+export default () => {
   const { dismiss, show, toast } = useNotification();
   const { message, type } = toast;
 
   useEffect(() => {
-    if (show) setTimeout(() => dismiss(), timeout || 2500);
+    if (show) setTimeout(() => dismiss(), toast.timeout || 2500);
   }, [show]);
 
   return toast && (
@@ -29,18 +21,18 @@ export default ({ actions, timeout }: NotificationProps) => {
         close
       </CloseButton>
       <NotificationMsg>{message}</NotificationMsg>
-      {actions && (
+      {toast.actions && (
         <ActionsContainer>
           <button
             type="button"
-            onClick={actions.accept}
+            onClick={toast.actions.accept}
           >
             Accept
 
           </button>
           <button
             type="button"
-            onClick={actions.reject}
+            onClick={toast.actions.reject}
           >
             Reject
           </button>
