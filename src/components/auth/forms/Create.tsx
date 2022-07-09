@@ -89,7 +89,7 @@ export default ({ onCancel }: { onCancel: () => void }) => {
             </span>
           </RuneLabel>
           <RuneInput
-            type="text"
+            type="password"
             id="password"
             {...register('password', { required: true, maxLength: 20, minLength: 4 })}
           />
