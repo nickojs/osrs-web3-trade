@@ -12,6 +12,8 @@ const TradeScreenStory: Story<TradeScreenProps> = (args) => <TradeScreen {...arg
 export const TradeScreenDefault = TradeScreenStory.bind({});
 TradeScreenDefault.args = {
   recipientName: 'fulano',
-  receivingItems: items,
-  sendingItems: items
+  receivingItems: items.slice(0, 2),
+  sendingItems: items.slice(2, 4),
+  recipientAccept: false,
+  senderAccept: false
 };

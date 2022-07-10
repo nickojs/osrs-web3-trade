@@ -9,72 +9,81 @@ import {
  Text,
  TradeGrid,
  TradeItemsContainer,
- TradeTitle
+ TradeTitle,
+ RecipientAck
 } from './styles';
 
 export interface TradeScreenProps {
   receivingItems: Item[],
   sendingItems: Item[],
-  recipientName: string
+  recipientName: string,
+  recipientAccept: boolean,
+  senderAccept: boolean
 }
 
-export default ({ receivingItems, sendingItems, recipientName }: TradeScreenProps) => {
-  console.log('hi ');
-
-  return (
-    <TradeGrid>
-      <TradeTitle>
-        <Title>
-          {recipientName
+export default ({
+ receivingItems,
+ sendingItems,
+ recipientName,
+ recipientAccept,
+ senderAccept
+}: TradeScreenProps) => (
+  <TradeGrid hasAccepted={senderAccept}>
+    <TradeTitle>
+      <Title>
+        {recipientName
               ? `Trading with: ${recipientName}`
-              : `Waiting ${recipientName} to connect...`}
-        </Title>
-      </TradeTitle>
-      <YourTrade>
-        <Text>Your offer</Text>
-        <TradeItemsContainer>
-          {sendingItems.map((item) => (
-            <ItemWrapper item={item} />
+              : 'Waiting user to connect...'}
+      </Title>
+    </TradeTitle>
+    <YourTrade>
+      <Text>Your offer</Text>
+      <TradeItemsContainer>
+        {sendingItems.map((item) => (
+          <ItemWrapper key={item.id} item={item} />
           ))}
-        </TradeItemsContainer>
-
-      </YourTrade>
-      <OtherTrade>
-        <Text>
-          {recipientName}
-          {' '}
-          offer
-        </Text>
-        <TradeItemsContainer>
-          {receivingItems.map((item) => (
-            <ItemWrapper item={item} />
+      </TradeItemsContainer>
+      {senderAccept && (
+      <RecipientAck>
+        you accepted the trade
+      </RecipientAck>
+        )}
+    </YourTrade>
+    <OtherTrade>
+      <Text>
+        {recipientName}
+        {' '}
+        offer
+      </Text>
+      <TradeItemsContainer>
+        {receivingItems.map((item) => (
+          <ItemWrapper key={item.id} item={item} />
           ))}
-        </TradeItemsContainer>
+      </TradeItemsContainer>
 
-        {/* {recipientAck && (
-          <p>
-            {recipientName}
-            {' '}
-            has accepted the trade
-          </p>
-        )} */}
+      {recipientAccept && (
+      <RecipientAck>
+        {recipientName}
+        {' '}
+        has accepted the trade
+      </RecipientAck>
+        )}
 
-      </OtherTrade>
-      <ButtonContainer>
-        <Button
+    </OtherTrade>
+    <ButtonContainer>
+      <Button
           // disabled={!allowTrade}
           // onClick={onAccept}
-          color="lime"
-        >
-          Accept
-        </Button>
-        <Button
+        color="lime"
+      >
+        Accept
+      </Button>
+      <Button
           // onClick={onDecline}
-          color="red"
-        >
-          Decline
-        </Button>
-      </ButtonContainer>
-    </TradeGrid>
+        color="red"
+      >
+        Decline
+      </Button>
+    </ButtonContainer>
+  </TradeGrid>
   );
-};

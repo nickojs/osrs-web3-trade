@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 const disabledGrid = css`
   pointer-events: none;
   cursor: not-allowed;
+  opacity: .7;
 `;
 
 const Container = styled.div`
@@ -19,7 +20,9 @@ const Container = styled.div`
   box-shadow: inset 0 0 10px black;
 `;
 
-export const TradeGrid = styled.div`
+export const TradeGrid = styled.div<{ hasAccepted: boolean}>`
+  ${({ hasAccepted }) => (hasAccepted && disabledGrid)};
+
   position: absolute;
   z-index: 9999;
   
@@ -125,4 +128,11 @@ export const TradeItemsContainer = styled.div`
 
   pointer-events: none;
   list-style: none;
+`;
+
+export const RecipientAck = styled.p`
+  margin-bottom: 0;
+  min-height: 36px;
+  
+  font-size: 12px;
 `;
