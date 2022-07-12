@@ -1,6 +1,3 @@
-/* eslint-disable react/require-default-props */
-// import useNotification from '../../context/NotificationContext'
-
 import { useEffect } from 'react';
 import useNotification from '../../context/NotificationContext';
 import {
@@ -25,14 +22,14 @@ export default () => {
         <ActionsContainer>
           <button
             type="button"
-            onClick={toast.actions.accept}
+            onClick={() => { toast.actions?.accept(); dismiss(); }}
           >
             Accept
 
           </button>
           <button
             type="button"
-            onClick={toast.actions.reject}
+            onClick={() => { toast.actions?.reject(); dismiss(); }}
           >
             Reject
           </button>
