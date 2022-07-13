@@ -1,7 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
+import React, {
+ useCallback, useContext, useEffect, useMemo, useState
+} from 'react';
+import { io } from 'socket.io-client';
+import { Item } from '../components/inventory/interfaces';
 import { baseURL } from '../services/api';
 
 type ConnectedPayload = {
@@ -9,29 +10,26 @@ type ConnectedPayload = {
   username: string;
 };
 
-type InitTradeRequest = {
-  targetId: string;
-}
-
-type InitTradeResponse = {
-  message: string;
-  data: {
-    user: {
-      userId: string;
-      socketId: string;
-    },
-  },
+export type TradeUser = {
+  userId: string;
+  socketId: string;
+  username: string;
+  trading: {
+    isTrading: boolean;
+  }
+  sendingItems: Item[]
 }
 
 export interface SocketProps {
   isConnected: boolean;
-  tradeRequest: InitTradeResponse;
+  requestMsg: string;
+  errorMsg: string;
+  targetUser: TradeUser;
   afterConnect: (data: ConnectedPayload) => void;
-  initTrade: (data: InitTradeRequest) => void;
+  requestTrade: (targetId: string) => void;
   declineTrade: () => void;
-  declineTradeResponse: string;
   acceptTrade: () => void;
-  openTradeScreen: boolean;
+  tradeScreen: boolean;
 }
 
 const SocketContext = React.createContext<SocketProps>(
@@ -39,48 +37,68 @@ const SocketContext = React.createContext<SocketProps>(
 );
 
 export const SocketProvider: React.FC = ({ children }) => {
-  const [client, setClient] = useState<Socket | null>(null);
+  const socket = useMemo(() => io(baseURL), []);
   const [isConnected, setConnected] = useState(false);
-  const [tradeRequest, setTradeRequest] = useState<InitTradeResponse>({} as InitTradeResponse);
-  const [declineTradeResponse, setDeclineTradeResponse] = useState('');
-  const [openTradeScreen, setOpenTradeScreen] = useState(false);
+  const [targetUser, setTargetUser] = useState<TradeUser>({} as TradeUser);
+  const [tradeScreen, setTradeScreen] = useState(false);
+  const [requestMsg, setRequestMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    const socket = io(baseURL);
     socket.on('connect', () => setConnected(true));
-    socket.on('error', (error) => console.log('something went wrong, ', error));
-    socket.on('initTrade', (data: InitTradeResponse) => { setTradeRequest(data); });
-    socket.on('declineTrade', (data: { message: string }) => setDeclineTradeResponse(data.message));
-    socket.on('acceptTrade', () => setOpenTradeScreen(true));
-    setClient(socket);
+    socket.on('error', (err) => {
+      const { message, error } = err;
+      console.log(error);
+      if (message) setErrorMsg(message);
+    });
+
+    socket.on('updateUser', (user: TradeUser) => setTargetUser(user));
+
+    socket.on('requestTrade', (data: { message: string }) => {
+      const { message } = data;
+      if (message) setRequestMsg(message);
+    });
+
+    socket.on('declineTrade', (data: { message: string }) => {
+      setTradeScreen(false);
+      setTargetUser({} as TradeUser);
+      const { message } = data;
+      if (message) setErrorMsg(message);
+    });
+
+    socket.on('acceptTrade', () => { setTradeScreen(true); });
   }, []);
 
-  const afterConnect = (data: ConnectedPayload) => client?.emit('afterConnect', { ...data });
+  const afterConnect = (payload: ConnectedPayload) => socket.emit('afterConnect', payload);
 
-  const initTrade = (data: InitTradeRequest) => client?.emit('initTrade', { ...data });
-
-  const declineTrade = () => {
-    client?.emit('declineTrade', { tradingId: tradeRequest.data.user.userId });
-    setTradeRequest({} as InitTradeResponse);
+  const requestTrade = (payload: string) => {
+    socket.emit('requestTrade', { targetId: payload });
+    setTradeScreen(true);
   };
 
-  const acceptTrade = () => {
-    client?.emit('acceptTradeInit', { tradingId: tradeRequest.data.user.userId });
-    setOpenTradeScreen(true);
-  };
+  const declineTrade = useCallback(() => {
+    socket.emit('declineTrade', { tradingId: targetUser.userId });
+    setTargetUser({} as TradeUser);
+  }, [targetUser]);
+
+  const acceptTrade = useCallback(() => {
+    socket.emit('acceptTradeInit', { tradingId: targetUser.userId });
+    setTradeScreen(true);
+  }, [targetUser]);
 
   return (
     <SocketContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         isConnected,
-        tradeRequest,
+        targetUser,
+        requestMsg,
+        errorMsg,
         afterConnect,
-        initTrade,
+        requestTrade,
         acceptTrade,
         declineTrade,
-        declineTradeResponse,
-        openTradeScreen
+        tradeScreen
       }}
     >
       {children}

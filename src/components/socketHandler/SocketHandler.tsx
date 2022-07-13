@@ -12,8 +12,9 @@ export default ({ children }: SocketWrapperProps) => {
     afterConnect,
     acceptTrade,
     declineTrade,
-    declineTradeResponse,
-    tradeRequest
+    requestMsg,
+    errorMsg,
+    targetUser
   } = useSocket();
   const { user } = useAuth();
   const { setToast } = useToast();
@@ -25,24 +26,28 @@ export default ({ children }: SocketWrapperProps) => {
   }, [user]);
 
   useEffect(() => {
-    if (tradeRequest && tradeRequest.message) {
+    if (requestMsg && targetUser) {
       setToast({
-        message: tradeRequest.message,
-        type: ToastType.WARNING,
-        timeout: 5000,
+        message: requestMsg,
+        type: ToastType.SUCCESS,
+        timeout: 50000,
         actions: {
           accept: acceptTrade,
           reject: declineTrade
       }
       });
     }
-  }, [tradeRequest]);
+  }, [requestMsg, targetUser]);
 
   useEffect(() => {
-    if (declineTradeResponse) {
-      setToast({ message: declineTradeResponse, type: ToastType.WARNING });
+    if (errorMsg) {
+      setToast({
+        message: errorMsg,
+        type: ToastType.ERROR,
+        timeout: 5000
+      });
     }
-  }, [declineTradeResponse]);
+  }, [errorMsg]);
 
   return children;
 };
