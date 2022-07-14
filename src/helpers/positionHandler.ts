@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { PositionProperties, Placement } from '../context/PositionContext';
 
 export default (

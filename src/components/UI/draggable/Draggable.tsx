@@ -1,32 +1,42 @@
+import { useEffect, useState } from 'react';
 import { Rnd } from 'react-rnd';
 import { DraggableProps } from './interfaces';
 import usePosition from '../../../context/PositionContext';
+import useResize from '../../../hooks/useResize';
+import positionHandler from '../../../helpers/positionHandler';
 
 export default ({ children, component }: DraggableProps) => {
-  const {
- setX, setY, setTop, onTop, components
-} = usePosition();
+  const [localx, setLocalx] = useState(-1);
+  const [localy, setLocaly] = useState(-1);
+
+  const { onTop, components, setTop } = usePosition();
   const { [component]: currentComponent } = components;
-  const { xAxis: x, yAxis: y, display } = currentComponent;
+  const { display } = currentComponent;
+  const windowSize = useResize();
 
-  const setPositionHandler = (X: number, Y: number) => {
-    setY(Y, component);
-    setX(X, component);
-  };
+  useEffect(() => {
+    const { x, y } = positionHandler(currentComponent, windowSize);
+    setLocalx(x);
+    setLocaly(y);
+  }, [windowSize]);
 
-  return (
+  return localx >= 0 && localy >= 0 ? (
     <Rnd
       style={{
         zIndex: onTop === component ? 999 : 0,
         display: display ? 'block' : 'none'
       }}
       onDragStart={() => setTop(component)}
-      onDragStop={(e, d) => setPositionHandler(d.x, d.y)}
       enableResizing={false}
       bounds="parent"
-      position={{ x, y }}
+      default={{
+        x: localx,
+        y: localy,
+        height: 'auto',
+        width: 'auto'
+      }}
     >
       {children}
     </Rnd>
-  );
+  ) : <p>Loading...</p>;
 };
