@@ -1,4 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const disabledArea = css`
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: .5;
+`;
 
 export const MarketPlace = styled.section`
   display: flex;
@@ -14,7 +20,8 @@ export const MarketPlace = styled.section`
   background: #443e30;
 `;
 
-export const ListView = styled.ul`
+export const ListView = styled.ul<{ isLoading: boolean }>`
+  ${({ isLoading }) => isLoading && disabledArea};
   flex-grow: 1;
 
   display: grid;
@@ -51,5 +58,11 @@ export const SearchContainer = styled.div`
 
   & select {
     width: 120px;
+  }
+
+  * {
+    &:disabled{ 
+      ${disabledArea}
+    }
   }
 `;

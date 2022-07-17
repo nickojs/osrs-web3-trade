@@ -1,27 +1,19 @@
 import { useEffect } from 'react';
-import { useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import usePosition, { PositionComponents } from '../../context/PositionContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
-import ItemWrapper from './ItemWrapper';
-import { fetchInventory, removeFromInventory } from '../../services/endpoints';
-import { api } from '../../services/api';
+import useAuth from '../../context/AuthContext';
+import { useRemoveInventoryItem, useFetchInventory } from '../../hooks/useInventory';
+import parseInventory from '../../helpers/parseInventory';
 import Loader from '../UI/loader/Loader';
+import ItemWrapper from './ItemWrapper';
+import { Item } from './interfaces';
 import {
   Inventory, InventoryContent, InventoryMenu, InventoryMenuEntry
 } from './styles';
-import useAuth from '../../context/AuthContext';
-import { Item } from './interfaces';
-
-const parseInventory = (apiInventory: Record<string, any>) => ({
-  id: apiInventory.itemId,
-  icon: apiInventory.iconUrl,
-  description: apiInventory.description,
-  name: apiInventory.name
-});
 
 export default () => {
-  const { user, clearSession } = useAuth();
+  const { clearSession } = useAuth();
   const { toggle } = usePosition();
   const { setToast } = useToast();
   const navigate = useNavigate();
@@ -33,23 +25,16 @@ export default () => {
   };
 
   const {
-  data, isLoading, error, refetch, isRefetching
-  } = useQuery(['fetchInventory', user], () => {
-    const fetchInventoryObj = fetchInventory(user.username);
-    return api(fetchInventoryObj);
-  });
+    data, isLoading, error, refetch, isRefetching
+  } = useFetchInventory();
 
-  const removeFromInventoryMutation = useMutation(({ item }: { item: Item }) => {
-    const removeFromInventoryObj = removeFromInventory(item);
-    return api(removeFromInventoryObj);
-  }, {
-    onSuccess: () => {
+  const { mutate: onRemoveFromInventory, isLoading: removeLoading } = useRemoveInventoryItem(
+    () => {
       setToast({ message: 'removed from the inventory', type: ToastType.SUCCESS });
       refetch();
-    }
-  });
-
-  const onRemoveFromInventory = (item: Item) => removeFromInventoryMutation.mutate({ item });
+    },
+    () => setToast({ message: 'couldnt remove item', type: ToastType.ERROR })
+  );
 
   useEffect(() => {
     if (error) {
@@ -79,7 +64,7 @@ export default () => {
         />
       </InventoryMenu>
       <InventoryContent>
-        {(isLoading || isRefetching) ? <Loader /> : (
+        {(isLoading || removeLoading || isRefetching) ? <Loader /> : (
           data && data.data?.inventory && data?.data.inventory.map((item: Item) => (
             <ItemWrapper
               key={item.id}
