@@ -30,7 +30,7 @@ export default ({ children }: SocketWrapperProps) => {
       setToast({
         message: requestMsg,
         type: ToastType.SUCCESS,
-        timeout: 50000,
+        timeout: 5000,
         actions: {
           accept: acceptTrade,
           reject: declineTrade

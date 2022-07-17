@@ -44,12 +44,19 @@ export const SocketProvider: React.FC = ({ children }) => {
   const [requestMsg, setRequestMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
+  const resetState = () => {
+    setTargetUser({} as TradeUser);
+    setTradeScreen(false);
+    setRequestMsg('');
+  };
+
   useEffect(() => {
     socket.on('connect', () => setConnected(true));
     socket.on('error', (err) => {
       const { message, error } = err;
       console.log(error);
       if (message) setErrorMsg(message);
+      resetState();
     });
 
     socket.on('updateUser', (user: TradeUser) => setTargetUser(user));
@@ -60,8 +67,7 @@ export const SocketProvider: React.FC = ({ children }) => {
     });
 
     socket.on('declineTrade', (data: { message: string }) => {
-      setTradeScreen(false);
-      setTargetUser({} as TradeUser);
+      resetState();
       const { message } = data;
       if (message) setErrorMsg(message);
     });
@@ -72,13 +78,14 @@ export const SocketProvider: React.FC = ({ children }) => {
   const afterConnect = (payload: ConnectedPayload) => socket.emit('afterConnect', payload);
 
   const requestTrade = (payload: string) => {
+    resetState();
     socket.emit('requestTrade', { targetId: payload });
     setTradeScreen(true);
   };
 
   const declineTrade = useCallback(() => {
+    resetState();
     socket.emit('declineTrade', { tradingId: targetUser.userId });
-    setTargetUser({} as TradeUser);
   }, [targetUser]);
 
   const acceptTrade = useCallback(() => {
