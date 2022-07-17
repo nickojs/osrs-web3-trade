@@ -63,8 +63,8 @@ export default () => {
           onClick={logout}
         />
       </InventoryMenu>
-      <InventoryContent>
-        {(isLoading || removeLoading || isRefetching) ? <Loader /> : (
+      <InventoryContent isLoading={removeLoading || isRefetching}>
+        {(isLoading) ? <Loader /> : (
           data && data.data?.inventory && data?.data.inventory.map((item: Item) => (
             <ItemWrapper
               key={item.id}

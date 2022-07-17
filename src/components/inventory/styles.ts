@@ -5,6 +5,7 @@ import inventory from '../../assets/menu/inventory.png';
 import logout from '../../assets/menu/logout.png';
 import trade from '../../assets/menu/trade.png';
 import userlist from '../../assets/menu/userlist.png';
+import { ListView } from '../../globalStyles';
 
 export type InventoryMenuType = 'disclaimer' | 'inventory' | 'logout' | 'trade' | 'userlist'
 
@@ -52,7 +53,7 @@ export const Inventory = styled.div`
   background-repeat: no-repeat;
 `;
 
-export const InventoryContent = styled.ul`
+export const InventoryContent = styled(ListView)`
   display: grid; 
   grid-template-columns: 1fr 1fr 1fr 1fr; 
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; 

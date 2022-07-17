@@ -1,10 +1,5 @@
-import styled, { css } from 'styled-components';
-
-const disabledArea = css`
-  pointer-events: none;
-  cursor: not-allowed;
-  opacity: .5;
-`;
+import styled from 'styled-components';
+import { ListView as ListViewBase, disabledArea } from '../../globalStyles';
 
 export const MarketPlace = styled.section`
   display: flex;
@@ -20,8 +15,7 @@ export const MarketPlace = styled.section`
   background: #443e30;
 `;
 
-export const ListView = styled.ul<{ isLoading: boolean }>`
-  ${({ isLoading }) => isLoading && disabledArea};
+export const ListView = styled(ListViewBase)`
   flex-grow: 1;
 
   display: grid;

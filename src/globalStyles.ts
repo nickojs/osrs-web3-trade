@@ -1,6 +1,17 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, css } from 'styled-components';
 
 import Press2P from './assets/fonts/press2p.ttf';
+
+export const disabledArea = css`
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: .5;
+`;
+
+export const ListView = styled.ul<{ isLoading: boolean }>`
+  ${({ isLoading }) => isLoading && disabledArea};
+  padding: 0;
+`;
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
