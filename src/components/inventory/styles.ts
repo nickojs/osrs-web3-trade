@@ -5,7 +5,7 @@ import inventory from '../../assets/menu/inventory.png';
 import logout from '../../assets/menu/logout.png';
 import trade from '../../assets/menu/trade.png';
 import userlist from '../../assets/menu/userlist.png';
-import { ListView } from '../../globalStyles';
+import { disabledArea, ListView } from '../../globalStyles';
 
 export type InventoryMenuType = 'disclaimer' | 'inventory' | 'logout' | 'trade' | 'userlist'
 
@@ -132,14 +132,17 @@ width: 55px;
   }
 `;
 
-export const Tooltip = styled.div`
+export const Tooltip = styled.div<{ isHovering: boolean }>`
+  ${({ isHovering }) => isHovering && disabledArea}
+  opacity: 1;
   position: absolute;
   top: 50%; left: -100%; 
   transform: translate(-50%, -50%);
 
-  width: 150px;
-  z-index: 2;
-  
+  min-width: 150px;
+  z-index: 999;
+  padding: 2px 8px 2px 8px;
+
   text-align: center;
   line-height: 20px;
 

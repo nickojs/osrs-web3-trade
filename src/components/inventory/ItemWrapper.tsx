@@ -18,7 +18,7 @@ export default ({ item, onClick }: ItemWrapperProps) => {
   return (
     <Container>
       {hover && (
-      <Tooltip>
+      <Tooltip isHovering={hover}>
         {name}
       </Tooltip>
     )}
