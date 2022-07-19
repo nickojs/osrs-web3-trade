@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import usePosition, { PositionComponents } from '../../context/PositionContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
 import useAuth from '../../context/AuthContext';
-import { useRemoveInventoryItem, useFetchInventory } from '../../hooks/useInventory';
+import { useRemoveInventoryItem, useFetchInventory, useRefreshInventory } from '../../hooks/useInventory';
 import parseInventory from '../../helpers/parseInventory';
 import Loader from '../UI/loader/Loader';
 import ItemWrapper from './ItemWrapper';
@@ -28,6 +28,8 @@ export default () => {
     data, isLoading, error, refetch, isRefetching
   } = useFetchInventory();
 
+  const { refetch: refreshInventory } = useRefreshInventory();
+
   const { mutate: onRemoveFromInventory, isLoading: removeLoading } = useRemoveInventoryItem(
     () => {
       setToast({ message: 'removed from the inventory', type: ToastType.SUCCESS });
@@ -35,6 +37,11 @@ export default () => {
     },
     () => setToast({ message: 'couldnt remove item', type: ToastType.ERROR })
   );
+
+  const refreshInventoryHandler = () => {
+    refreshInventory();
+    refetch();
+  };
 
   useEffect(() => {
     if (error) {
@@ -51,7 +58,7 @@ export default () => {
         />
         <div />
         <div />
-        <InventoryMenuEntry icon="inventory" />
+        <InventoryMenuEntry icon="inventory" onClick={() => refreshInventoryHandler()} />
         <InventoryMenuEntry
           icon="userlist"
           onClick={() => toggle(PositionComponents.USERLIST)}

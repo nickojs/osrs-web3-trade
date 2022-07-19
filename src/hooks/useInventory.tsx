@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 import useAuth from '../context/AuthContext';
 import { api } from '../services/api';
-import { fetchInventory, removeFromInventory } from '../services/endpoints';
+import { fetchInventory, refreshInventory, removeFromInventory } from '../services/endpoints';
 import { Item } from '../components/inventory/interfaces';
 
 export const useFetchInventory = () => {
@@ -25,4 +25,12 @@ export const useRemoveInventoryItem = (
     mutationKey: 'fetchInventory',
     onSuccess,
     onError
+  });
+
+export const useRefreshInventory = () => useQuery(['fetchInventory'], () => {
+    const refreshInventoryObj = refreshInventory();
+    return api(refreshInventoryObj);
+  }, {
+    refetchOnWindowFocus: false,
+    enabled: false
   });
