@@ -29,3 +29,14 @@ api.interceptors.request.use((config) => {
   }
   return config;
 }, (error) => Promise.reject(error));
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const token = localStorage.getItem('auth_token');
+    if (error.response.status === 401 && token) {
+      localStorage.removeItem('auth_token');
+      window.location.reload();
+   }
+  }
+);
