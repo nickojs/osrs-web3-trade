@@ -1,10 +1,5 @@
 import styled, { css } from 'styled-components';
-
-const disabledGrid = css`
-  pointer-events: none;
-  cursor: not-allowed;
-  opacity: .7;
-`;
+import { disabledArea } from '../../globalStyles';
 
 const Container = styled.div`
   display: flex;
@@ -20,12 +15,24 @@ const Container = styled.div`
   box-shadow: inset 0 0 10px black;
 `;
 
+export const TradeBackDrop = styled.div<{ hasAccepted: boolean}>`
+  ${({ hasAccepted }) => (!hasAccepted && disabledArea)};
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, .5);
+  opacity: .7;
+  z-index: 1000;
+`;
+
 export const TradeGrid = styled.div<{ hasAccepted: boolean}>`
-  ${({ hasAccepted }) => (hasAccepted && disabledGrid)};
+  ${({ hasAccepted }) => (!hasAccepted && disabledArea)};
 
   position: absolute;
-  z-index: 9999;
-  
+  top: 25%; left: 50%;
+  transform: translate(-50%, -25%);
+  z-index: 1001;
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.3fr 1.3fr 1.4fr;
@@ -90,7 +97,7 @@ export const Button = styled.button`
   color: ${({ color }) => color};
 
   :disabled { 
-    ${disabledGrid}
+    ${disabledArea}
     filter: grayscale(100%);
   };
 `;
