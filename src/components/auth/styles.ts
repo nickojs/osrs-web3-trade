@@ -1,13 +1,5 @@
-import styled, { css } from 'styled-components';
-
-export const resetInput = css` 
-  -webkit-box-shadow:  none;
-  -moz-box-shadow:  none;
-  border: none;
-  background-image: none;
-  background-color: transparent;
-  box-shadow:  none;
-`;
+import styled from 'styled-components';
+import { resetInput } from '../../globalStyles';
 
 export const Container = styled.div`
   min-width: 460px;

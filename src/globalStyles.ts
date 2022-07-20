@@ -8,6 +8,25 @@ export const disabledArea = css`
   opacity: .5;
 `;
 
+export const resetInput = css` 
+  -webkit-box-shadow:  none;
+  -moz-box-shadow:  none;
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  box-shadow:  none;
+`;
+
+export const resetButton = css`
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+
+  background: transparent;
+`;
+
 export const ListView = styled.ul<{ isLoading: boolean }>`
   ${({ isLoading }) => isLoading && disabledArea};
   padding: 0;

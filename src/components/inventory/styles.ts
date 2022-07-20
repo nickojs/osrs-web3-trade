@@ -1,40 +1,9 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import inventoryBg from '../../assets/inventory.png';
-import disclaimer from '../../assets/menu/disclaimer.png';
-import inventory from '../../assets/menu/inventory.png';
-import logout from '../../assets/menu/logout.png';
-import trade from '../../assets/menu/trade.png';
-import userlist from '../../assets/menu/userlist.png';
-import { disabledArea, ListView } from '../../globalStyles';
-
-export type InventoryMenuType = 'disclaimer' | 'inventory' | 'logout' | 'trade' | 'userlist'
-
-const inventoryMenuHelper = (value: InventoryMenuType) => {
-  switch (value) {
-    case 'disclaimer':
-      return disclaimer;
-    case 'inventory':
-      return inventory;
-    case 'logout':
-      return logout;
-    case 'trade':
-      return trade;
-    case 'userlist':
-      return userlist;
-    default:
-      throw new Error('[inventoryMenuHelper]: unknown InventoryMenu type received');
-  }
-};
-
-const resetButton = css`
-  border: none;
-  margin: 0;
-  padding: 0;
-  width: auto;
-  overflow: visible;
-
-  background: transparent;
-`;
+import {
+ disabledArea, ListView, resetInput, resetButton
+} from '../../globalStyles';
+import inventoryMenuHelper, { InventoryMenuType } from '../../helpers/inventoryMenu';
 
 export const Container = styled.div`
   position: relative;
@@ -149,4 +118,8 @@ export const Tooltip = styled.div<{ isHovering: boolean }>`
   border: 3px double black;
 
   transition: .3s opacity;
+`;
+
+export const IconButton = styled.button`
+  ${resetInput}
 `;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ToastType } from '../../context/NotificationContext';
-import { resetInput } from '../auth/styles';
+import { resetInput } from '../../globalStyles';
 
 const toastColorHelper = {
   [ToastType.SUCCESS]: 'darkgreen',
