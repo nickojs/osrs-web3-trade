@@ -20,11 +20,17 @@ export type TradeUser = {
   sendingItems: Item[]
 }
 
+interface UpdateUserPayload {
+  targetUser: TradeUser,
+  currentUser: TradeUser
+}
+
 export interface SocketProps {
   isConnected: boolean;
   requestMsg: string;
   errorMsg: string;
   targetUser: TradeUser;
+  currentUser: TradeUser;
   afterConnect: (data: ConnectedPayload) => void;
   requestTrade: (targetId: string) => void;
   declineTrade: () => void;
@@ -40,6 +46,7 @@ export const SocketProvider: React.FC = ({ children }) => {
   const socket = useMemo(() => io(baseURL), []);
   const [isConnected, setConnected] = useState(false);
   const [targetUser, setTargetUser] = useState<TradeUser>({} as TradeUser);
+  const [currentUser, setCurrentUser] = useState<TradeUser>({} as TradeUser);
   const [tradeScreen, setTradeScreen] = useState(false);
   const [requestMsg, setRequestMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -64,7 +71,14 @@ export const SocketProvider: React.FC = ({ children }) => {
       setTimeout(resetMessages, 5000);
     });
 
-    socket.on('updateUser', (user: TradeUser) => setTargetUser(user));
+    socket.on('updateUser', (payload: UpdateUserPayload) => {
+      const {
+        currentUser: currentUserPayload,
+        targetUser: targetUserPayload
+      } = payload;
+      setTargetUser(targetUserPayload);
+      setCurrentUser(currentUserPayload);
+    });
 
     socket.on('requestTrade', (data: { message: string }) => {
       resetMessages();
@@ -110,6 +124,7 @@ export const SocketProvider: React.FC = ({ children }) => {
       value={{
         isConnected,
         targetUser,
+        currentUser,
         requestMsg,
         errorMsg,
         afterConnect,
