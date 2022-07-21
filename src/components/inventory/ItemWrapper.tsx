@@ -23,6 +23,7 @@ export default ({ item, onClick }: ItemWrapperProps) => {
       </Tooltip>
     )}
       <ItemWrapper
+        indicator="remove"
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         onClick={clickHandler}
