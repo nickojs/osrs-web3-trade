@@ -53,6 +53,7 @@ export const SocketProvider: React.FC = ({ children }) => {
 
   const resetState = () => {
     setTargetUser({} as TradeUser);
+    setCurrentUser({} as TradeUser);
     setTradeScreen(false);
   };
 

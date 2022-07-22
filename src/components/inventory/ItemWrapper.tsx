@@ -5,10 +5,11 @@ import { Container, ItemWrapper, Tooltip } from './styles';
 
 interface ItemWrapperProps {
   item: Item;
+  indicator: 'remove' | 'add' | 'trade';
   onClick?: () => void;
 }
 
-export default ({ item, onClick }: ItemWrapperProps) => {
+export default ({ item, indicator, onClick }: ItemWrapperProps) => {
   const { icon, name } = item;
   const [hover, setHover] = useState(false);
   const clickHandler = () => {
@@ -18,12 +19,12 @@ export default ({ item, onClick }: ItemWrapperProps) => {
   return (
     <Container>
       {hover && (
-      <Tooltip isHovering={hover}>
-        {name}
-      </Tooltip>
-    )}
+        <Tooltip isHovering={hover}>
+          {name}
+        </Tooltip>
+      )}
       <ItemWrapper
-        indicator="remove"
+        indicator={indicator}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         onClick={clickHandler}

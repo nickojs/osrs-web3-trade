@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import usePosition, { PositionComponents } from '../../context/PositionContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
 import useAuth from '../../context/AuthContext';
+import useSocket from '../../context/SocketContext';
 import { useRemoveInventoryItem, useFetchInventory, useRefreshInventory } from '../../hooks/useInventory';
 import parseInventory from '../../helpers/parseInventory';
 import Loader from '../UI/loader/Loader';
@@ -16,7 +17,10 @@ export default () => {
   const { clearSession } = useAuth();
   const { toggle } = usePosition();
   const { setToast } = useToast();
+  const { currentUser } = useSocket();
   const navigate = useNavigate();
+
+  const { trading } = currentUser;
 
   const logout = () => {
     clearSession();
@@ -51,30 +55,33 @@ export default () => {
 
   return (
     <Inventory>
-      <InventoryMenu>
-        <InventoryMenuEntry
-          icon="trade"
-          onClick={() => toggle(PositionComponents.MARKETPLACE)}
-        />
-        <div />
-        <div />
-        <InventoryMenuEntry icon="inventory" onClick={() => refreshInventoryHandler()} />
-        <InventoryMenuEntry
-          icon="userlist"
-          onClick={() => toggle(PositionComponents.USERLIST)}
-        />
-        <div />
-        <div />
-        <InventoryMenuEntry
-          icon="logout"
-          onClick={logout}
-        />
-      </InventoryMenu>
+      {!trading?.isTrading && (
+        <InventoryMenu>
+          <InventoryMenuEntry
+            icon="trade"
+            onClick={() => toggle(PositionComponents.MARKETPLACE)}
+          />
+          <div />
+          <div />
+          <InventoryMenuEntry icon="inventory" onClick={() => refreshInventoryHandler()} />
+          <InventoryMenuEntry
+            icon="userlist"
+            onClick={() => toggle(PositionComponents.USERLIST)}
+          />
+          <div />
+          <div />
+          <InventoryMenuEntry
+            icon="logout"
+            onClick={logout}
+          />
+        </InventoryMenu>
+      )}
       <InventoryContent isLoading={removeLoading || isRefetching}>
         {(isLoading) ? <Loader /> : (
           data && data.data?.inventory && data?.data.inventory.map((item: Item) => (
             <ItemWrapper
               key={item.id}
+              indicator={trading?.isTrading ? 'add' : 'remove'}
               item={parseInventory(item)}
               onClick={() => onRemoveFromInventory(item)}
             />

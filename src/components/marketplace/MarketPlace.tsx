@@ -62,6 +62,7 @@ export default () => {
       <ListView isLoading={addToInventoryLoading}>
         {items.length > 0 && items.map((item) => (
           <ItemWrapper
+            indicator="add"
             key={item.id}
             item={item}
             onClick={() => addToInventoryMutation(item)}

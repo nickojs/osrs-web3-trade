@@ -1,9 +1,52 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import inventoryBg from '../../assets/inventory.png';
+import inventoryMenuHelper, { InventoryMenuType } from '../../helpers/inventoryMenu';
 import {
  disabledArea, ListView, resetInput, resetButton
 } from '../../globalStyles';
-import inventoryMenuHelper, { InventoryMenuType } from '../../helpers/inventoryMenu';
+
+const baseIcon = css`
+  position: absolute;
+  top: 0%; right: 15%;
+  font-weight: bold;
+`;
+
+const removeIcon = css`
+  :before {
+    content: '-';
+    ${baseIcon}
+    color: red;
+  }
+`;
+
+const addIcon = css`
+  :before {
+    content: '+';
+    ${baseIcon}
+    color: lime;
+  }
+`;
+
+const tradeIcon = css`
+  :before {
+    content: '⭾';
+    ${baseIcon}
+    color: lime;
+  }
+`;
+
+const itemIndicatorHelper = (value: string) => {
+  switch (value) {
+    case 'remove':
+      return removeIcon;
+    case 'add':
+      return addIcon;
+    case 'trade':
+      return tradeIcon;
+    default:
+      throw new Error('[itemIndicatorHelper] unknown value received');
+  }
+};
 
 export const Container = styled.div`
   position: relative;
@@ -77,8 +120,8 @@ export const InventoryMenuEntry = styled.button<{ icon: InventoryMenuType }>`
   background-repeat: no-repeat;
 `;
 
-export const ItemWrapper = styled.div`
-width: 55px;
+export const ItemWrapper = styled.div<{ indicator: string }>`
+  width: 55px;
   height: 55px;
   padding: 6px;
   margin: 6px;
@@ -98,6 +141,7 @@ width: 55px;
 
   &:hover {
     cursor: pointer;
+    ${({ indicator }) => indicator && itemIndicatorHelper(indicator)}
   }
 `;
 
