@@ -3,8 +3,9 @@ import bg from '../assets/bg_texture.jpg';
 
 export const Container = styled.section`
   position: relative;
-  width: 100vw;
+
   height: 100vh;
+  width: 100vw;
 `;
 
 export const LoginContainer = styled(Container)`
