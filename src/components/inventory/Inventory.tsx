@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import usePosition, { PositionComponents } from '../../context/PositionContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
 import useAuth from '../../context/AuthContext';
 import useSocket from '../../context/SocketContext';
@@ -14,6 +15,7 @@ import {
 
 export default () => {
   const { clearSession } = useAuth();
+  const { setDisplay } = usePosition();
   const { setToast } = useToast();
   const { currentUser } = useSocket();
   const navigate = useNavigate();
@@ -57,14 +59,14 @@ export default () => {
         <InventoryMenu>
           <InventoryMenuEntry
             icon="trade"
-            // onClick={() => toggle(PositionComponents.MARKETPLACE)}
+            onClick={() => setDisplay(PositionComponents.MARKETPLACE)}
           />
           <div />
           <div />
           <InventoryMenuEntry icon="inventory" onClick={() => refreshInventoryHandler()} />
           <InventoryMenuEntry
             icon="userlist"
-            // onClick={() => toggle(PositionComponents.USERLIST)}
+            onClick={() => setDisplay(PositionComponents.USERLIST)}
           />
           <div />
           <div />

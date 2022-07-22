@@ -5,19 +5,22 @@ import Notification from './components/notification/Notification';
 import { GlobalStyle } from './globalStyles';
 import routes from './routes';
 import { SocketProvider } from './context/SocketContext';
+import { PositionProvider } from './context/PositionContext';
 
 const queryClient = new QueryClient();
 
 export default () => (
   <QueryClientProvider client={queryClient}>
     <ToastProvider>
-      <SocketProvider>
-        <AuthProvider>
-          <GlobalStyle />
-          <Notification />
-          {routes}
-        </AuthProvider>
-      </SocketProvider>
+      <PositionProvider>
+        <SocketProvider>
+          <AuthProvider>
+            <GlobalStyle />
+            <Notification />
+            {routes}
+          </AuthProvider>
+        </SocketProvider>
+      </PositionProvider>
     </ToastProvider>
   </QueryClientProvider>
 );

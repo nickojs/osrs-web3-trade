@@ -1,25 +1,44 @@
-import MakertPlace from '../components/marketplace/MarketPlace';
+import MarketPlace from '../components/marketplace/MarketPlace';
 import Inventory from '../components/inventory/Inventory';
-import Draggable from '../components/UI/draggable/Draggable';
 import UserList from '../components/userList/UserList';
-import { PositionComponents } from '../context/PositionContext';
+import Trade from './Trade';
 import SocketHandler from '../components/socketHandler/SocketHandler';
+import PositionWrapper from '../components/UI/positionWrapper/PositionWrapper';
 import { Container } from './styles';
+import usePosition, { PositionComponents } from '../context/PositionContext';
 
-export default () => (
-  <SocketHandler>
-    <Container>
-      <Draggable component={PositionComponents.USERLIST}>
-        <UserList />
-      </Draggable>
+const mappedComponents = {
+  [PositionComponents.INVENTORY]: Inventory,
+  [PositionComponents.MARKETPLACE]: MarketPlace,
+  [PositionComponents.TRADE]: Trade,
+  [PositionComponents.USERLIST]: UserList
+};
 
-      <Draggable component={PositionComponents.MARKETPLACE}>
-        <MakertPlace />
-      </Draggable>
+export default () => {
+  const { components, onTop, setTop } = usePosition();
 
-      <Draggable component={PositionComponents.INVENTORY}>
-        <Inventory />
-      </Draggable>
-    </Container>
-  </SocketHandler>
-);
+  return (
+    <SocketHandler>
+      <Container>
+        {Object.keys(components).map((comp) => {
+            const typedComp = comp as PositionComponents;
+            const { display, placement } = components[typedComp];
+            const CurrentComponent = mappedComponents[typedComp];
+            const setTopHandler = () => setTop(typedComp);
+
+            return (
+              <PositionWrapper
+                key={typedComp}
+                onTop={onTop === typedComp}
+                setTop={setTopHandler}
+                display={display}
+                position={placement}
+              >
+                <CurrentComponent />
+              </PositionWrapper>
+            );
+          })}
+      </Container>
+    </SocketHandler>
+  );
+};

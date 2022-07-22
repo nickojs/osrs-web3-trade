@@ -1,30 +1,25 @@
+import { Placement } from '../../../context/PositionContext';
 import { PositionContainer } from './styles';
-
-export enum Placement {
-  TOPLEFT,
-  TOPRIGHT,
-  BOTTOMLEFT,
-  BOTTOMRIGHT,
-  CENTER
-}
 
 interface PositionWrapperProps {
   position: Placement;
   display: boolean;
   onTop: boolean;
+  setTop: () => void;
   children: any;
 }
 
 export default (props: PositionWrapperProps) => {
   const {
-    position, display, onTop, children
+    position, display, onTop, children, setTop
   } = props;
 
   return (
     <PositionContainer
       placement={position}
-      display={display}
-      onTop={onTop}
+      isOnTop={onTop}
+      onClick={setTop}
+      show={display}
     >
       {children}
     </PositionContainer>

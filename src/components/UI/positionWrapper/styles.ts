@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Placement } from './PositionWrapper';
+import { Placement } from '../../../context/PositionContext';
 
 export const positionHandler = (placement: Placement) => {
   switch (placement) {
@@ -19,6 +19,12 @@ export const positionHandler = (placement: Placement) => {
         top: 50%; left: 50%;
         transform: translate(-50%, -50%);
       `;
+    case Placement.UPPERCENTER:
+      return css`
+        position: absolute;
+        top: 20%; left: 50%;
+        transform: translate(-50%, -20%);
+      `;
     case Placement.BOTTOMLEFT:
       return css`
         position: absolute;
@@ -36,10 +42,10 @@ export const positionHandler = (placement: Placement) => {
 
 export const PositionContainer = styled.div<{
   placement: Placement
-  display: boolean
-  onTop: boolean
+  show: boolean
+  isOnTop: boolean
 }>`
   ${({ placement }) => positionHandler(placement)}
-  display: ${({ display }) => (display ? 'block' : 'none')};
-  z-index: ${({ onTop }) => (onTop ? 666 : 0)};
+  display: ${({ show }) => (show ? 'block' : 'none')};
+  z-index: ${({ isOnTop }) => (isOnTop ? 666 : 0)};
 `;
