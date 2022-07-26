@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { io } from 'socket.io-client';
 import { Item } from '../components/inventory/interfaces';
+import { useFetchInventory } from '../hooks/useInventory';
 import { baseURL } from '../services/api';
 
 type ConnectedPayload = {
@@ -17,6 +18,7 @@ export type TradeUser = {
   trading: {
     isTrading: boolean;
   }
+  acceptTrade: boolean;
   sendingItems: Item[]
 }
 
@@ -29,13 +31,17 @@ export interface SocketProps {
   isConnected: boolean;
   requestMsg: string;
   errorMsg: string;
+  completeTradeMsg: string;
   targetUser: TradeUser;
   currentUser: TradeUser;
+  tradeScreen: boolean;
   afterConnect: (data: ConnectedPayload) => void;
   requestTrade: (targetId: string) => void;
   declineTrade: () => void;
   acceptTrade: () => void;
-  tradeScreen: boolean;
+  sendItem: (item: Item) => void;
+  removeItem: (item: Item) => void;
+  acknowledgeTrade: () => void;
 }
 
 const SocketContext = React.createContext<SocketProps>(
@@ -49,7 +55,10 @@ export const SocketProvider: React.FC = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<TradeUser>({} as TradeUser);
   const [tradeScreen, setTradeScreen] = useState(false);
   const [requestMsg, setRequestMsg] = useState('');
+  const [completeTradeMsg, setCompleteTradeMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  const { refetch } = useFetchInventory();
 
   const resetState = () => {
     setTargetUser({} as TradeUser);
@@ -77,6 +86,7 @@ export const SocketProvider: React.FC = ({ children }) => {
         currentUser: currentUserPayload,
         targetUser: targetUserPayload
       } = payload;
+      console.log(payload);
       setTargetUser(targetUserPayload);
       setCurrentUser(currentUserPayload);
     });
@@ -96,6 +106,14 @@ export const SocketProvider: React.FC = ({ children }) => {
     socket.on('acceptTrade', () => {
       resetMessages();
       setTradeScreen(true);
+    });
+
+    socket.on('completeTrade', () => {
+      refetch();
+      setTargetUser({} as TradeUser);
+      setCurrentUser({} as TradeUser);
+      setTradeScreen(false);
+      setCompleteTradeMsg('Trade went successfully!');
     });
   }, []);
 
@@ -119,6 +137,18 @@ export const SocketProvider: React.FC = ({ children }) => {
     setTradeScreen(true);
   }, [targetUser]);
 
+  const sendItem = useCallback((item: Item) => {
+    socket.emit('sendItem', { item, targetId: targetUser.userId });
+  }, [targetUser]);
+
+  const removeItem = useCallback((item: Item) => {
+    socket.emit('removeItem', { item, targetId: targetUser.userId });
+  }, [targetUser]);
+
+  const acknowledgeTrade = useCallback(() => {
+    socket.emit('acknowledgeTrade', { targetId: targetUser.userId });
+  }, [targetUser]);
+
   return (
     <SocketContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -128,11 +158,15 @@ export const SocketProvider: React.FC = ({ children }) => {
         currentUser,
         requestMsg,
         errorMsg,
+        completeTradeMsg,
+        tradeScreen,
         afterConnect,
         requestTrade,
         acceptTrade,
         declineTrade,
-        tradeScreen
+        sendItem,
+        removeItem,
+        acknowledgeTrade
       }}
     >
       {children}

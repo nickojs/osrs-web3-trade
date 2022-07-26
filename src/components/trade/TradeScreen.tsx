@@ -1,89 +1,75 @@
+import { TradeUser } from '../../context/SocketContext';
 import { Item } from '../inventory/interfaces';
-import ItemWrapper from '../inventory/ItemWrapper';
 import {
- Button,
- ButtonContainer,
- YourTrade,
- OtherTrade,
- Title,
- Text,
- TradeGrid,
- TradeItemsContainer,
- TradeTitle,
- RecipientAck
+  Button,
+  ButtonContainer,
+  Title,
+  TradeGrid,
+  TradeTitle
 } from './styles';
+import TradeSection from './TradeSection';
 
 export interface TradeScreenProps {
-  receivingItems: Item[],
-  sendingItems: Item[],
-  recipientName: string,
-  recipientAccept: boolean,
-  senderAccept: boolean
+  targetUser: TradeUser,
+  currentUser: TradeUser,
+  onDecline: () => void;
+  onAccept: () => void;
+  removeItem: (item: Item) => void;
 }
 
 export default ({
- receivingItems,
- sendingItems,
- recipientName,
- recipientAccept,
- senderAccept
-}: TradeScreenProps) => (
-  <TradeGrid hasAccepted={senderAccept}>
-    <TradeTitle>
-      <Title>
-        {recipientName
-              ? `Trading with: ${recipientName}`
+  targetUser,
+  currentUser,
+  onDecline,
+  onAccept,
+  removeItem
+}: TradeScreenProps) => {
+  const {
+    username, trading, sendingItems: targetUserItems, acceptTrade: targetUserAck
+  } = targetUser;
+  const { sendingItems: currentUserItems, acceptTrade: currentUserAck } = currentUser;
+
+  return (
+    <TradeGrid>
+      <TradeTitle>
+        <Title>
+          {trading?.isTrading
+              ? `Trading with: ${username}`
               : 'Waiting user to connect...'}
-      </Title>
-    </TradeTitle>
-    <YourTrade>
-      <Text>Your offer</Text>
-      <TradeItemsContainer>
-        {sendingItems.map((item) => (
-          <ItemWrapper key={item.id} item={item} />
-          ))}
-      </TradeItemsContainer>
-      {senderAccept && (
-      <RecipientAck>
-        you accepted the trade
-      </RecipientAck>
-        )}
-    </YourTrade>
-    <OtherTrade>
-      <Text>
-        {recipientName}
-        {' '}
-        offer
-      </Text>
-      <TradeItemsContainer>
-        {receivingItems.map((item) => (
-          <ItemWrapper key={item.id} item={item} />
-          ))}
-      </TradeItemsContainer>
-
-      {recipientAccept && (
-      <RecipientAck>
-        {recipientName}
-        {' '}
-        has accepted the trade
-      </RecipientAck>
-        )}
-
-    </OtherTrade>
-    <ButtonContainer>
-      <Button
-          // disabled={!allowTrade}
-          // onClick={onAccept}
-        color="lime"
-      >
-        Accept
-      </Button>
-      <Button
-          // onClick={onDecline}
-        color="red"
-      >
-        Decline
-      </Button>
-    </ButtonContainer>
-  </TradeGrid>
+        </Title>
+      </TradeTitle>
+      {Object.keys(currentUser).length > 0 && (
+        <TradeSection
+          type="current"
+          title="Your Offer"
+          items={currentUserItems}
+          removeItemHandler={removeItem}
+          ackMsg={currentUserAck ? 'You accept the trade' : ''}
+        />
+      )}
+      {Object.keys(targetUser).length > 0 && (
+        <TradeSection
+          type="target"
+          title={`${username} offer`}
+          items={targetUserItems}
+          ackMsg={targetUserAck ? `${username} accept the trade` : ''}
+        />
+      )}
+      <ButtonContainer>
+        <Button
+          disabled={currentUserAck}
+          onClick={onAccept}
+          color="lime"
+        >
+          Accept
+        </Button>
+        <Button
+          onClick={onDecline}
+          color="red"
+        >
+          Decline
+        </Button>
+      </ButtonContainer>
+    </TradeGrid>
   );
+};

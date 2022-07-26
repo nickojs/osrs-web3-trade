@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+import useToast, { ToastType } from './NotificationContext';
 
 export type User = {
   id: string;
@@ -23,6 +25,8 @@ const AuthContext = React.createContext<AuthProps>(
 export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [user, setUser] = useState<User>({} as User);
+  const navigate = useNavigate();
+  const { setToast } = useToast();
 
   const getTokenHandler = () => {
     try {
@@ -47,6 +51,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     localStorage.clear();
     setUser({} as User);
     setToken('');
+    setToast({ message: 'logout in progress...', type: ToastType.WARNING });
+    setTimeout(() => navigate('/'), 1500);
   };
 
   useEffect(() => {

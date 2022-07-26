@@ -41,7 +41,7 @@ const initialState = {
   },
   [PositionComponents.TRADE]: {
     placement: Placement.UPPERCENTER,
-    display: false
+    display: true
   },
   [PositionComponents.USERLIST]: {
     placement: Placement.TOPLEFT,
@@ -50,8 +50,7 @@ const initialState = {
 };
 
 enum ActionTypes {
-  TOGGLEDISPLAY,
-  SETTOP
+  TOGGLEDISPLAY
 }
 
 type Actions = { type: ActionTypes.TOGGLEDISPLAY; component: PositionComponents; }

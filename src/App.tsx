@@ -10,17 +10,17 @@ import { PositionProvider } from './context/PositionContext';
 const queryClient = new QueryClient();
 
 export default () => (
-  <QueryClientProvider client={queryClient}>
-    <ToastProvider>
-      <PositionProvider>
-        <SocketProvider>
-          <AuthProvider>
+  <AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ToastProvider>
+        <PositionProvider>
+          <SocketProvider>
             <GlobalStyle />
             <Notification />
             {routes}
-          </AuthProvider>
-        </SocketProvider>
-      </PositionProvider>
-    </ToastProvider>
-  </QueryClientProvider>
+          </SocketProvider>
+        </PositionProvider>
+      </ToastProvider>
+    </QueryClientProvider>
+  </AuthProvider>
 );

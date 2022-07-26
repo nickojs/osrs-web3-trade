@@ -6,10 +6,13 @@ import { Container, ItemWrapper, Tooltip } from './styles';
 interface ItemWrapperProps {
   item: Item;
   indicator: 'remove' | 'add' | 'trade';
+  isTrading?: boolean;
   onClick?: () => void;
 }
 
-export default ({ item, indicator, onClick }: ItemWrapperProps) => {
+export default ({
+ item, indicator, isTrading = false, onClick
+}: ItemWrapperProps) => {
   const { icon, name } = item;
   const [hover, setHover] = useState(false);
   const clickHandler = () => {
@@ -18,13 +21,16 @@ export default ({ item, indicator, onClick }: ItemWrapperProps) => {
 
   return (
     <Container>
-      {hover && (
+      {hover
+        && indicator !== 'trade'
+        && (
         <Tooltip isHovering={hover}>
           {name}
         </Tooltip>
       )}
       <ItemWrapper
         indicator={indicator}
+        isTrading={isTrading}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         onClick={clickHandler}

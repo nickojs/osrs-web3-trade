@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import usePosition, { PositionComponents } from '../../context/PositionContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
 import useAuth from '../../context/AuthContext';
@@ -8,25 +7,17 @@ import { useRemoveInventoryItem, useFetchInventory, useRefreshInventory } from '
 import parseInventory from '../../helpers/parseInventory';
 import Loader from '../UI/loader/Loader';
 import ItemWrapper from './ItemWrapper';
-import { Item } from './interfaces';
 import {
   Inventory, InventoryContent, InventoryMenu, InventoryMenuEntry
 } from './styles';
+import { Item } from './interfaces';
 
 export default () => {
-  const { clearSession } = useAuth();
+  const { clearSession: logout } = useAuth();
   const { setDisplay } = usePosition();
   const { setToast } = useToast();
-  const { currentUser } = useSocket();
-  const navigate = useNavigate();
-
-  const { trading } = currentUser;
-
-  const logout = () => {
-    clearSession();
-    setToast({ message: 'logout in progress...', type: ToastType.WARNING });
-    setTimeout(() => navigate('/'), 1500);
-  };
+  const { currentUser, sendItem } = useSocket();
+  const { trading, sendingItems } = currentUser;
 
   const {
     data, isLoading, error, refetch, isRefetching
@@ -78,14 +69,23 @@ export default () => {
       )}
       <InventoryContent isLoading={removeLoading || isRefetching}>
         {(isLoading) ? <Loader /> : (
-          data && data.data?.inventory && data?.data.inventory.map((item: Item) => (
-            <ItemWrapper
-              key={item.id}
-              indicator={trading?.isTrading ? 'add' : 'remove'}
-              item={parseInventory(item)}
-              onClick={() => onRemoveFromInventory(item)}
-            />
-          ))
+          data?.data?.inventory.map((item: Item) => {
+            const isCurrentTrading = !!sendingItems?.find(
+              (sItem) => sItem.id === item.id
+            );
+
+            return (
+              <ItemWrapper
+                key={item.id}
+                indicator={trading?.isTrading ? 'add' : 'remove'}
+                isTrading={isCurrentTrading}
+                item={parseInventory(item)}
+                onClick={trading?.isTrading
+                  ? () => sendItem(parseInventory(item))
+                  : () => onRemoveFromInventory(item)}
+              />
+            );
+          })
         )}
       </InventoryContent>
     </Inventory>

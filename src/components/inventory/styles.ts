@@ -31,7 +31,7 @@ const tradeIcon = css`
   :before {
     content: '⭾';
     ${baseIcon}
-    color: lime;
+    color: gold;
   }
 `;
 
@@ -120,7 +120,11 @@ export const InventoryMenuEntry = styled.button<{ icon: InventoryMenuType }>`
   background-repeat: no-repeat;
 `;
 
-export const ItemWrapper = styled.div<{ indicator: string }>`
+export const ItemWrapper = styled.div<{
+  indicator: string
+  isTrading: boolean
+}>`
+  ${({ isTrading }) => isTrading && disabledArea};
   width: 55px;
   height: 55px;
   padding: 6px;
@@ -139,9 +143,13 @@ export const ItemWrapper = styled.div<{ indicator: string }>`
     height: 100%;
   }
 
+  ${({ indicator }) => indicator === 'trade' && css`
+    ${itemIndicatorHelper(indicator)}
+  `}
+  
   &:hover {
     cursor: pointer;
-    ${({ indicator }) => indicator && itemIndicatorHelper(indicator)}
+    ${({ indicator }) => indicator !== 'trade' && itemIndicatorHelper(indicator)}
   }
 `;
 

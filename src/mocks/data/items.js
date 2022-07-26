@@ -8,25 +8,29 @@ import item4151 from './assets/4151.gif';
 
 export default [
 {
-  id: 45321,
+  id: '45321',
+  itemId: 45321,
   icon: item45321,
   description: 'Banite tuned against abyssals, so an abyssalite two handed sword?',
   name: 'Abyssal bane 2h sword'
 },
 {
-  id: 45328,
+  id: '45328',
+  itemId: 45328,
   icon: item45328,
   description: 'Banite tuned against abyssals, so an abyssalite longsword?',
   name: 'Abyssal bane longsword'
 },
 {
-  id: 45335,
+  id: '45335',
+  itemId: 45335,
   icon: item45335,
   description: 'Banite tuned against abyssals, so an abyssalite off hand longsword?',
   name: 'Abyssal bane off-hand longsword'
 },
 {
-  id: 4151,
+  id: '4151',
+  itemId: 4151,
   icon: item4151,
   description: 'A weapon from the Abyss.',
   name: 'Abyssal whip'

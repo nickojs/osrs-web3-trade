@@ -25,9 +25,7 @@ export const TradeBackDrop = styled.div<{ hasAccepted: boolean}>`
   z-index: 1000;
 `;
 
-export const TradeGrid = styled.div<{ hasAccepted: boolean}>`
-  ${({ hasAccepted }) => (!hasAccepted && disabledArea)};
-
+export const TradeGrid = styled.div`
   position: absolute;
   top: 25%; left: 50%;
   transform: translate(-50%, -25%);
@@ -60,12 +58,13 @@ export const TradeTitle = styled(Container)`
   grid-area: trade-title;
 `;
 
-export const YourTrade = styled(Container)`
-  grid-area: your-trade;
-`;
-
-export const OtherTrade = styled(Container)`
-  grid-area: other-trade;
+export const TradeSection = styled(Container)<{
+  type: 'current' | 'target'
+  isLocked: boolean
+}>`
+  ${({ type }) => (type === 'current' ? 'grid-area: your-trade' : 'grid-area: other-trade')};
+  ${({ isLocked }) => isLocked && disabledArea};
+  opacity: 1;
 `;
 
 export const ButtonContainer = styled.div`
@@ -133,7 +132,6 @@ export const TradeItemsContainer = styled.div`
   height: 250px;
   width: 240px;
 
-  pointer-events: none;
   list-style: none;
 `;
 

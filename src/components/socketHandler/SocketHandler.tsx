@@ -14,6 +14,7 @@ export default ({ children }: SocketWrapperProps) => {
     declineTrade,
     requestMsg,
     errorMsg,
+    completeTradeMsg,
     targetUser
   } = useSocket();
   const { user } = useAuth();
@@ -24,6 +25,16 @@ export default ({ children }: SocketWrapperProps) => {
       afterConnect({ userId: user.id, username: user.username });
     }
   }, [user]);
+
+  useEffect(() => {
+    if (completeTradeMsg) {
+      setToast({
+        message: completeTradeMsg,
+        type: ToastType.SUCCESS,
+        timeout: 5000
+      });
+    }
+  }, [completeTradeMsg]);
 
   useEffect(() => {
     if (requestMsg && targetUser) {
