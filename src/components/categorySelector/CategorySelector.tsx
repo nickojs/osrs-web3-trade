@@ -5,6 +5,11 @@ import { categories } from '../../services/endpoints';
 
 const categoriesObj = categories();
 
+interface Category {
+  id: number;
+  data: string;
+}
+
 export interface CategorySelectorProps {
   onChange: (value: number) => void;
   disabled: boolean
@@ -23,7 +28,7 @@ export default ({ onChange, disabled }: CategorySelectorProps) => {
       disabled={disabled}
     >
       <option>Select one</option>
-      {data && data.data.map((d: any) => (
+      {data && data.data.map((d: Category) => (
         <option key={d.id} value={d.id}>{d.data}</option>
       ))}
     </select>

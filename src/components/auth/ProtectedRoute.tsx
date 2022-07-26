@@ -5,7 +5,7 @@ import useAuth, { User } from '../../context/AuthContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
 
 interface ProtectedRoute {
-  children: any // fix later
+  children: JSX.Element
 }
 
 export default ({ children }: ProtectedRoute) => {

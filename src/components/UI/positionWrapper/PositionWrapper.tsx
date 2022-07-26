@@ -6,7 +6,7 @@ interface PositionWrapperProps {
   display: boolean;
   onTop: boolean;
   setTop: () => void;
-  children: any;
+  children: JSX.Element;
 }
 
 export default (props: PositionWrapperProps) => {

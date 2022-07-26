@@ -19,6 +19,9 @@
         "react",
         "@typescript-eslint"
     ],
+    "globals": {
+        "JSX": "readonly"
+     },
     "rules": {
         "@typescript-eslint/no-unused-vars": "warn",
         "no-shadow": "off",

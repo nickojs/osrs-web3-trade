@@ -4,7 +4,7 @@ import useAuth from '../../context/AuthContext';
 import useToast, { ToastType } from '../../context/NotificationContext';
 
 interface SocketWrapperProps {
-  children: any // fix later
+  children: JSX.Element
 }
 
 export default ({ children }: SocketWrapperProps) => {

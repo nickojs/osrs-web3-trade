@@ -74,8 +74,7 @@ export const SocketProvider: React.FC = ({ children }) => {
   useEffect(() => {
     socket.on('connect', () => setConnected(true));
     socket.on('error', (err) => {
-      const { message, error } = err;
-      console.log(error);
+      const { message } = err;
       if (message) setErrorMsg(message);
       resetState();
       setTimeout(resetMessages, 5000);
@@ -86,7 +85,6 @@ export const SocketProvider: React.FC = ({ children }) => {
         currentUser: currentUserPayload,
         targetUser: targetUserPayload
       } = payload;
-      console.log(payload);
       setTargetUser(targetUserPayload);
       setCurrentUser(currentUserPayload);
     });
