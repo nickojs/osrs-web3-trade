@@ -21,13 +21,6 @@ export default ({
 
   return (
     <Container>
-      {hover
-        && indicator !== 'trade'
-        && (
-        <Tooltip isHovering={hover}>
-          {name}
-        </Tooltip>
-      )}
       <ItemWrapper
         indicator={indicator}
         isTrading={isTrading}
@@ -35,6 +28,13 @@ export default ({
         onMouseLeave={() => setHover(false)}
         onClick={clickHandler}
       >
+        {hover
+          && indicator !== 'trade'
+          && (
+          <Tooltip isHovering={hover}>
+            {name}
+          </Tooltip>
+        )}
         <img src={icon} alt={name} />
       </ItemWrapper>
     </Container>

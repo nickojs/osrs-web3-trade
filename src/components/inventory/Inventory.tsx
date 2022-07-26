@@ -50,19 +50,26 @@ export default () => {
         <InventoryMenu>
           <InventoryMenuEntry
             icon="trade"
+            title="open marketplace"
             onClick={() => setDisplay(PositionComponents.MARKETPLACE)}
           />
           <div />
           <div />
-          <InventoryMenuEntry icon="inventory" onClick={() => refreshInventoryHandler()} />
+          <InventoryMenuEntry
+            icon="inventory"
+            title="refresh items"
+            onClick={() => refreshInventoryHandler()}
+          />
           <InventoryMenuEntry
             icon="userlist"
+            title="user list"
             onClick={() => setDisplay(PositionComponents.USERLIST)}
           />
           <div />
           <div />
           <InventoryMenuEntry
             icon="logout"
+            title="logout"
             onClick={logout}
           />
         </InventoryMenu>

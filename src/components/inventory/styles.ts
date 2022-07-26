@@ -161,7 +161,7 @@ export const Tooltip = styled.div<{ isHovering: boolean }>`
   transform: translate(-50%, -50%);
 
   min-width: 150px;
-  padding: 2px 8px 2px 8px;
+  padding: 2px;
 
   text-align: center;
   line-height: 20px;

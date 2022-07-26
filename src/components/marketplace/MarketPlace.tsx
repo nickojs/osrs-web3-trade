@@ -60,7 +60,7 @@ export default () => {
       {isLoading && <Loader />}
 
       <ListView isLoading={addToInventoryLoading}>
-        {items.length > 0 && items.map((item) => (
+        {!isLoading && items.length > 0 && items.map((item) => (
           <ItemWrapper
             indicator="add"
             key={item.id}

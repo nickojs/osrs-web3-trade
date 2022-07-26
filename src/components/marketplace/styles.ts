@@ -25,10 +25,9 @@ export const ListView = styled(ListViewBase)`
   
   list-style: none;
   padding: 0 12px;
-
+  
   max-height: 200px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: visible;
 `;
 
 export const MakertPlaceTitle = styled.h1`
