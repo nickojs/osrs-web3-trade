@@ -8,9 +8,8 @@ import { AuthBody, create } from '../../../services/endpoints';
 import {
   ButtonWrapper,
   ErrorMessage,
-  FormContainer,
   InputWrapper,
-  LoginFormContainer,
+  CreatFormContainer,
   RuneButton,
   RuneInput,
   RuneLabel
@@ -66,8 +65,8 @@ export default ({ onCancel }: { onCancel: () => void }) => {
   };
 
   return (
-    <FormContainer>
-      <LoginFormContainer>
+    <CreatFormContainer>
+      <div>
         <InputWrapper>
           <RuneLabel htmlFor="username">
             <span>
@@ -99,7 +98,7 @@ export default ({ onCancel }: { onCancel: () => void }) => {
 
         <ProfilePicSelector onSelect={setPicHandler} selectedPic={pic} />
 
-      </LoginFormContainer>
+      </div>
       <ButtonWrapper>
         <RuneButton
           type="submit"
@@ -114,6 +113,6 @@ export default ({ onCancel }: { onCancel: () => void }) => {
           Return
         </RuneButton>
       </ButtonWrapper>
-    </FormContainer>
+    </CreatFormContainer>
   );
 };

@@ -1,30 +1,40 @@
 import styled from 'styled-components';
 import { resetInput } from '../../globalStyles';
 
-export const Container = styled.div`
-  min-width: 460px;
-  min-height: 120px;
+const Base = styled.div`
+  width: 500px;
   padding: 24px;
 
   border-radius: 12px;
   border: 6px outset black;
   box-shadow: 0 0 0 1px black;
+  box-sizing: border-box;
 
   background: rgb(90,92,102);
   background: linear-gradient(117deg, rgba(90,92,102,1) 0%, rgba(76,78,89,1) 35%, rgba(44,45,52,1) 100%); 
-
+  
   & p{ 
     text-align: center;
     color: white;
   }
 `;
 
-export const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+export const Container = styled(Base)`
+  height: 180px;
+`;
 
-  height: 100%;
+export const LoginFormContainer = styled(Base)` 
+  min-height: 180px;
+  margin: 0 auto;
+  
+  * { font-size: 14px; }
+`;
+
+export const CreatFormContainer = styled(Base)` 
+  height: 280px;
+  margin: 12px auto;
+  
+  * { font-size: 14px; }
 `;
 
 export const RuneInput = styled.input`
@@ -63,22 +73,12 @@ export const RuneButton = styled.button`
   }
 `;
 
-export const LoginFormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  width: 90%;
-  margin: 12px auto;
-  * { font-size: 14px; }
-`;
-
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 `;
 
 export const ButtonWrapper = styled.div`
@@ -91,9 +91,13 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const ErrorMessage = styled.span`
-  color: red;
-  font-size: 12px;
-  align-self: flex-end;
-  text-align: right;
+  display: block;
+  
+  width: 100%;
   margin-bottom: 6px;
+  
+  font-size: 12px;
+  text-align: right;
+  
+  color: red;
 `;

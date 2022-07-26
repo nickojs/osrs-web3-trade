@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginScreen from '../components/auth/LoginScreen';
 import useAuth from '../context/AuthContext';
-import { LoginContainer } from './styles';
+import { LoginContainer, Title } from './styles';
 
 export default () => {
   const { token } = useAuth();
@@ -16,6 +16,7 @@ export default () => {
 
   return (
     <LoginContainer>
+      <Title>OSRS Trade Simulator</Title>
       <LoginScreen />
     </LoginContainer>
   );

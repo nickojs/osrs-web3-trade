@@ -10,11 +10,11 @@ export default () => {
   const returnHandler = () => setFormType(null);
 
   return (
-    <Container>
+    <>
       {formType && formType === 'login' && <Login onCancel={returnHandler} />}
       {formType && formType === 'create' && <Create onCancel={returnHandler} />}
       {!formType && (
-        <>
+        <Container>
           <p>Select an Option</p>
           <ButtonWrapper>
             <RuneButton
@@ -30,8 +30,8 @@ export default () => {
               Existing Account
             </RuneButton>
           </ButtonWrapper>
-        </>
+        </Container>
       )}
-    </Container>
+    </>
   );
 };

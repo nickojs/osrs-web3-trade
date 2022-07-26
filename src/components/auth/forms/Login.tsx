@@ -8,7 +8,6 @@ import { AuthBody, login } from '../../../services/endpoints';
 import {
   ButtonWrapper,
   ErrorMessage,
-  FormContainer,
   InputWrapper,
   LoginFormContainer,
   RuneButton,
@@ -55,8 +54,8 @@ export default ({ onCancel }: { onCancel: () => void }) => {
   };
 
   return (
-    <FormContainer>
-      <LoginFormContainer>
+    <LoginFormContainer>
+      <div>
         <InputWrapper>
           <RuneLabel htmlFor="username">
             <span>
@@ -66,7 +65,7 @@ export default ({ onCancel }: { onCancel: () => void }) => {
           <RuneInput
             type="text"
             id="username"
-            {...register('username', { required: true, maxLength: 20, minLength: 4 })}
+            {...register('username', { required: true })}
           />
         </InputWrapper>
         {errors?.username?.type
@@ -80,12 +79,12 @@ export default ({ onCancel }: { onCancel: () => void }) => {
           <RuneInput
             type="password"
             id="password"
-            {...register('password', { required: true, maxLength: 20, minLength: 6 })}
+            {...register('password', { required: true })}
           />
         </InputWrapper>
         {errors?.password?.type
             && <ErrorMessage>{generateErrorLabel(errors?.password?.type, 'password', 6, 20)}</ErrorMessage>}
-      </LoginFormContainer>
+      </div>
       <ButtonWrapper>
         <RuneButton
           disabled={Object.keys(errors).length > 0 || submitMutation.isLoading}
@@ -95,13 +94,13 @@ export default ({ onCancel }: { onCancel: () => void }) => {
           Log in
         </RuneButton>
         <RuneButton
-          disabled={Object.keys(errors).length > 0 || submitMutation.isLoading}
+          disabled={submitMutation.isLoading}
           type="submit"
           onClick={onCancel}
         >
           Return
         </RuneButton>
       </ButtonWrapper>
-    </FormContainer>
+    </LoginFormContainer>
   );
 };
