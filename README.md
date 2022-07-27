@@ -22,3 +22,16 @@ It was a challenge for some company, and they provided some boring icons for the
 
 ### The return
 A month ago I was laid off and then I return to work on this project. A [brand new backend](https://github.com/nickojs/osrs-trade-backend) was developed, this time I'm integrating with the "official" Runescape API directly, plus all the websockets, users and items logic. 
+
+## Issues and bugs 
+It's hard to develop an app this big alone and with no funding (since it's just for portfolio), so there are some open bugs and minor issues that I'm tracking. They'll be fix as time goes by.
+  
+  * Auth
+	  * [ ] redirect on logout
+	  * [ ] login/create error handling
+  
+  * Trade
+    * [ ] improve inventory refresh
+
+  * Socket
+    * [ ] inspect weird edge cases
