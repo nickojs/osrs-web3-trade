@@ -52,7 +52,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     setUser({} as User);
     setToken('');
     setToast({ message: 'logout in progress...', type: ToastType.WARNING });
-    setTimeout(() => navigate('/'), 1500);
+    setTimeout(() => navigate('/'), 0);
   };
 
   useEffect(() => {

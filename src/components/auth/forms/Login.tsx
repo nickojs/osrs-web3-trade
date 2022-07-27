@@ -30,10 +30,11 @@ export default ({ onCancel }: { onCancel: () => void }) => {
   const { setToast } = useToast();
   const { setToken } = useAuth();
 
-  const submitMutation = useMutation(({ data }: { data: AuthBody }) => {
+  const submitMutation = useMutation(async ({ data }: { data: AuthBody }) => {
     const { username, password } = data;
     const requestObj = login(username, password);
-    return api(requestObj);
+    const response = await api(requestObj);
+    return response;
   }, {
     onError: (error) => {
       const typedError = error as AxiosError;

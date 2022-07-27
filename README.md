@@ -28,8 +28,9 @@ It's hard to develop an app this big alone and with no funding (since it's just 
 
 ### Bug list (That I'm aware of)
   
- * [ ] redirect on logout
- * [ ] login/create error handling
+ * [x] redirect on logout
+ * [ ] login/create error handling 
+    * Partial fix: You won't get accurate error messages, but it's better than having technical error messages
  * [ ] improve inventory refresh
  * [ ] inspect weird socket cases
  * [ ] general style adjustments

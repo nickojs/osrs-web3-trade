@@ -10,9 +10,9 @@ import { PositionProvider } from './context/PositionContext';
 const queryClient = new QueryClient();
 
 export default () => (
-  <AuthProvider>
-    <QueryClientProvider client={queryClient}>
-      <ToastProvider>
+  <ToastProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
         <PositionProvider>
           <SocketProvider>
             <GlobalStyle />
@@ -20,7 +20,7 @@ export default () => (
             {routes}
           </SocketProvider>
         </PositionProvider>
-      </ToastProvider>
-    </QueryClientProvider>
-  </AuthProvider>
+      </QueryClientProvider>
+    </AuthProvider>
+  </ToastProvider>
 );

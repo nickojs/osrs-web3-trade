@@ -56,6 +56,7 @@ export default ({ onCancel }: { onCancel: () => void }) => {
       const { data }: { data: SuccessResponse} = d;
       if (data.message) {
         setToast({ message: 'user created! please log in', type: ToastType.WARNING });
+        onCancel(); // returns to the login screen
       }
     }
   });
