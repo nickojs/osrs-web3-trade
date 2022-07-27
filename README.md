@@ -25,13 +25,11 @@ A month ago I was laid off and then I return to work on this project. A [brand n
 
 ## Issues and bugs 
 It's hard to develop an app this big alone and with no funding (since it's just for portfolio), so there are some open bugs and minor issues that I'm tracking. They'll be fix as time goes by.
-  
-  * Auth
-	  * [ ] redirect on logout
-	  * [ ] login/create error handling
-  
-  * Trade
-    * [ ] improve inventory refresh
 
-  * Socket
-    * [ ] inspect weird edge cases
+### Bug list (That I'm aware of)
+  
+ * [ ] redirect on logout
+ * [ ] login/create error handling
+ * [ ] improve inventory refresh
+ * [ ] inspect weird socket cases
+ * [ ] general style adjustments
