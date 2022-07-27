@@ -37,7 +37,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         return localToken;
       }
     } catch (error) {
-      console.log(error);
+      throw new Error('[authProvider] something went wrong');
     }
     return undefined;
   };
